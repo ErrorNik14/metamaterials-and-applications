@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Re-entrant Auxetic Midsole</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  @page { size: 210mm 297mm; margin: 0; }
+  :root {
+    --ink: #1b1b1a; --muted: #6b6a66; --paper: #fcfcfb; --dark: #141413;
+    --accent: #c0392b; --warm: #e9e5de; --rule: #d9d8d3;
+    --serif: "Cormorant Garamond", Georgia, serif;
+    --sans: "Inter", "Segoe UI", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #555; }
+  body { font-family: var(--serif); color: var(--ink); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page { width: 210mm; height: 297mm; position: relative; overflow: hidden; background: var(--paper);
+          page-break-after: always; break-after: page; padding: 22mm 20mm 20mm 20mm; }
+  .dark { background: var(--dark); color: #eceae4; }
+  img { display: block; max-width: 100%; }
+
+  /* running head / folio */
+  .rh { position: absolute; top: 10mm; left: 20mm; right: 20mm; display: flex; justify-content: space-between;
+        font-family: var(--sans); font-size: 6.5pt; letter-spacing: 1.5pt; color: var(--muted); text-transform: uppercase; }
+  .folio { position: absolute; bottom: 10mm; right: 20mm; font-family: var(--sans); font-size: 7pt; color: var(--muted); }
+
+  /* type */
+  h1 { font-weight: 400; font-size: 24pt; letter-spacing: 2.5pt; text-transform: uppercase; line-height: 1.15; }
+  h2 { font-weight: 500; font-size: 14pt; margin: 6mm 0 2.5mm; }
+  h3 { font-weight: 500; font-style: italic; font-size: 12pt; margin: 4mm 0 1.5mm; }
+  p { font-size: 11pt; line-height: 1.5; margin-bottom: 2.6mm; text-align: justify; hyphens: auto; }
+  .lead { font-size: 12.5pt; font-style: italic; color: var(--muted); line-height: 1.45; }
+  .numeral { font-size: 54pt; line-height: 1; letter-spacing: 2pt; }
+  .eq { font-size: 12pt; text-align: center; margin: 3mm 0; }
+  .eq .n { float: right; font-size: 10pt; color: var(--muted); }
+  ul.l { margin: 0 0 3mm 5mm; font-size: 11pt; line-height: 1.5; }
+  sub, sup { font-size: 70%; }
+
+  /* figures */
+  figure { margin: 4mm 0; }
+  figcaption { font-family: var(--sans); font-size: 7pt; color: var(--muted); line-height: 1.45; margin-top: 2mm; }
+  figcaption b { color: var(--accent); font-weight: 500; margin-right: 2mm; }
+  .ph { border: .35mm dashed #b9b6ae; background: repeating-linear-gradient(45deg, #f4f2ee, #f4f2ee 3mm, #efece6 3mm, #efece6 6mm);
+        display: flex; align-items: center; justify-content: center; text-align: center;
+        font-family: var(--sans); font-size: 7.5pt; color: var(--muted); letter-spacing: .5pt; padding: 4mm; }
+  .ph::before { content: "PLACEHOLDER\A"; white-space: pre; font-weight: 500; color: var(--accent); letter-spacing: 1.5pt; }
+  .row { display: flex; gap: 5mm; }
+  .row > * { flex: 1; }
+
+  /* tables */
+  table.t { border-collapse: collapse; width: 100%; font-family: var(--sans); font-size: 8pt; margin: 3mm 0; }
+  table.t th, table.t td { padding: 1.5mm 2mm; text-align: right; border-bottom: .2mm solid var(--rule); }
+  table.t th { font-weight: 500; color: var(--muted); border-bottom: .3mm solid var(--ink); }
+  table.t td:first-child, table.t th:first-child { text-align: left; font-family: var(--serif); font-size: 10pt; }
+  table.t tr.hi td { color: var(--accent); }
+
+  /* chapter opener band */
+  .opener { margin: -22mm -20mm 8mm -20mm; padding: 26mm 20mm 10mm; background: var(--dark); color: #eceae4; }
+  .opener .lead { color: #a9a69e; margin-top: 3mm; }
+
+  /* cover */
+  .frame { position: absolute; inset: 18mm 18mm; border: .25mm solid #c9c7c1; }
+  .bleed { position: absolute; opacity: .5; }
+  .ct { position: absolute; top: 46%; left: 0; right: 0; text-align: center; }
+  .ct h1 { font-size: 26pt; letter-spacing: 5pt; }
+  .ct .sub { font-size: 11pt; letter-spacing: 3.5pt; text-transform: uppercase; margin-top: 3mm; }
+
+  /* contents */
+  .toc { font-size: 12pt; line-height: 2.1; margin-top: 8mm; }
+  .toc div { display: flex; }
+  .toc span.n { width: 12mm; color: var(--accent); }
+  .toc span.d { flex: 1; border-bottom: .2mm dotted #b9b6ae; margin: 0 2mm 2.2mm; }
+  .note { font-family: var(--sans); font-size: 7.5pt; color: var(--muted); line-height: 1.5; }
+  .refs p { font-size: 9.5pt; line-height: 1.4; text-align: left; padding-left: 7mm; text-indent: -7mm; margin-bottom: 1.8mm; }
+</style>
+</head>
+<body>
+
+<!-- ============ COVER ============ -->
+<section class="page">
+  <img class="bleed" src="fig/cover_stack.png" style="top:-6mm; left:-30mm; width:190mm; transform:rotate(-10deg);">
+  <img class="bleed" src="fig/cover_side.png" style="bottom:-4mm; right:-34mm; width:200mm; transform:rotate(-6deg);">
+  <img class="bleed" src="fig/cover_slice.png" style="top:62mm; right:14mm; width:62mm; opacity:.4;">
+  <div class="frame"></div>
+  <div class="ct">
+    <h1>Re-entrant Auxetics</h1>
+    <div class="sub">From cell models to a running midsole</div>
+    <div class="note" style="margin-top:9mm; letter-spacing:2pt;">MOS PROJECT 2026–27 &nbsp;·&nbsp; RE-ENTRANT HONEYCOMB STRAND</div>
+  </div>
+</section>
+
+<!-- ============ ABSTRACT / CONTENTS ============ -->
+<section class="page">
+  <div class="rh"><span>Re-entrant auxetics</span><span>Contents</span></div>
+  <h1 style="font-size:18pt;">Abstract</h1>
+  <p style="margin-top:4mm;">Re-entrant honeycombs are the archetypal auxetic lattice: under compression their bow-tie cells fold
+    inward, giving a negative Poisson's ratio. This report compares four analytical descriptions of the cell —
+    Gibson &amp; Ashby, Masters &amp; Evans, Malek &amp; Gibson and Ohtaki — against plane-stress finite-element
+    simulations in ANSYS, and then applies the cell to a running midsole. Measured running data (Fukuchi et al.)
+    drive a three-segment pseudo-foot that loads 34 lattice slices; each slice is solved as a beam on a lattice
+    foundation, and the lattice is chosen per zone of the foot.</p>
+  <p>At a wall thickness ratio of t/l = 0.4 the finite-element cell is 1.2–2.9 times stiffer and markedly less
+    auxetic (ν<sub>12</sub> = −0.14, ν<sub>21</sub> = −0.33) than the models predict, and it buckles at 0.36 MPa.
+    Ohtaki's large-deflection model follows the simulation closely up to that point but cannot predict the
+    collapse. In the midsole, forefoot strains reach about 20 % while midfoot and heel strains are governed by
+    the foot's shape rather than its load.</p>
+
+  <h1 style="font-size:18pt; margin-top:10mm;">Contents</h1>
+  <div class="toc">
+    <div><span class="n">I</span>Re-entrant auxetics<span class="d"></span>3</div>
+    <div><span class="n">II</span>Four analytical models<span class="d"></span>5</div>
+    <div><span class="n">III</span>Finite-element comparison<span class="d"></span>7</div>
+    <div><span class="n">IV</span>Application: running footwear<span class="d"></span>10</div>
+    <div><span class="n">V</span>Midsole optimisation<span class="d"></span>11</div>
+    <div><span class="n">VI</span>Discussion and outlook<span class="d"></span>17</div>
+    <div><span class="n">—</span>References<span class="d"></span>18</div>
+  </div>
+  <p class="note" style="margin-top:10mm;">Dashed boxes marked PLACEHOLDER are reserved for ANSYS screenshots, photographs
+    and drawings still to be added.</p>
+  <div class="folio">2</div>
+</section>
+
+<!-- ============ I. AUXETICS ============ -->
+<section class="page">
+  <div class="opener">
+    <div class="numeral">I</div>
+    <h1 style="margin-top:4mm;">Re-entrant auxetics</h1>
+    <div class="lead">Materials that get thinner when compressed — and fatter when stretched</div>
+  </div>
+  <h2>1.1 &nbsp;Negative Poisson's ratio</h2>
+  <p>Poisson's ratio ν measures how a material changes width when loaded along its length. Almost every
+    conventional material has ν between 0 and 0.5: a rubber band narrows as it is stretched, and a foam block
+    bulges sideways when squeezed. <i>Auxetic</i> materials have ν &lt; 0; they widen when stretched and draw
+    inward when compressed. The behaviour was demonstrated in re-entrant polymer foams by Lakes [1] and named
+    by Evans et al. [2].</p>
+  <p>Auxetic behaviour is a property of geometry rather than chemistry. It appears in structures whose internal
+    members rotate or fold as the structure deforms: re-entrant honeycombs, chiral lattices, rotating squares and
+    related mechanisms [3]. The consequences are practical — higher indentation resistance, higher shear
+    stiffness relative to bulk stiffness, energy absorption and the ability to curve into a dome (synclastic
+    curvature) rather than a saddle.</p>
+  <h2>1.2 &nbsp;The re-entrant honeycomb</h2>
+  <p>A conventional hexagonal honeycomb has inclined walls that point outward. Turning the wall angle θ
+    negative makes the inclined walls point back into the cell, producing the bow-tie shape of the re-entrant
+    honeycomb. Under vertical compression these walls rotate further inward and pull the vertical walls
+    together, so the whole lattice contracts sideways.</p>
+  <p>The cell is described by four lengths and an angle: the vertical wall h, the inclined wall l, the wall
+    thickness t, the depth b and the angle θ (negative for re-entrant). The two ratios h/l and t/l, together with
+    θ, set the in-plane properties; the solid's modulus E<sub>s</sub> scales them.</p>
+  <div class="row" style="align-items:flex-start;">
+    <figure style="flex:1.1;"><img src="fig/cover_slice.png">
+      <figcaption><b>Fig. 1</b>A lattice slice from the midsole of Chapter V, showing the re-entrant cell clipped to the foot section.</figcaption></figure>
+    <figure style="flex:1;"><div class="ph" style="height:52mm;">Annotated unit-cell diagram<br>(h, l, t, θ, x<sub>1</sub>, x<sub>2</sub>) with deformed overlay</div>
+      <figcaption><b>Fig. 2</b>Unit cell and notation.</figcaption></figure>
+  </div>
+  <div class="folio">3</div>
+</section>
+
+<section class="page">
+  <div class="rh"><span>I · Re-entrant auxetics</span><span>Scope</span></div>
+  <h2>1.3 &nbsp;Scope of this strand</h2>
+  <p>This report is one of four strands of a team project comparing auxetic and tensegrity concepts for
+    footwear: re-entrant honeycombs (this report), chiral lattices, rotating squares and tensegrity structures.
+    It asks two questions.</p>
+  <ul class="l">
+    <li>How well do the standard analytical models describe a re-entrant cell of printable proportions, judged
+      against finite-element simulation?</li>
+    <li>When the cell is placed in a running-shoe midsole and loaded by a realistic stance, how does it deform,
+      and which cell belongs where?</li>
+  </ul>
+  <p>Throughout, the solid is taken as a thermoplastic polyurethane with E<sub>s</sub> = 19.3 MPa and
+    ν<sub>s</sub> = 0.45. The printed samples (TPU 90A or 95A) will fix the true value; all stiffnesses in this
+    report scale linearly with it.</p>
+  <figure><img src="fig/model_compare_curves.png" style="width:100%;">
+    <figcaption><b>Fig. 3</b>Preview of Chapter III: the forefoot cell (left), its compression response (centre) and
+      Poisson's ratio (right) from four models and ANSYS.</figcaption></figure>
+  <figure><div class="ph" style="height:62mm;">Photograph of printed TPU re-entrant sample<br>(front view, with scale)</div>
+    <figcaption><b>Fig. 4</b>Printed re-entrant sample.</figcaption></figure>
+  <div class="folio">4</div>
+</section>
+
+<!-- ============ II. MODELS ============ -->
+<section class="page">
+  <div class="opener">
+    <div class="numeral">II</div>
+    <h1 style="margin-top:4mm;">Four analytical models</h1>
+    <div class="lead">Gibson &amp; Ashby · Masters &amp; Evans · Malek &amp; Gibson · Ohtaki</div>
+  </div>
+  <p>All four models treat the cell walls as beams and differ in which deformation mechanisms they keep. The
+    first three are linear (small strain) and share one compliance form; the fourth follows the walls through
+    large rotations.</p>
+  <h2>2.1 &nbsp;A common compliance form</h2>
+  <p>Each inclined wall deforms perpendicular to its axis (bending, hinging, shear) with compliance C<sub>p</sub>
+    and along its axis (stretching) with compliance C<sub>a</sub>; the vertical wall stretches under x<sub>2</sub>
+    load with compliance C<sub>v</sub>. In units of l³ / (E<sub>s</sub> b t³), with α = h/l and β = t/l:</p>
+  <div class="eq">D<sub>1</sub> = sin²θ C<sub>p</sub> + cos²θ C<sub>a</sub>, &nbsp;&nbsp;
+    D<sub>2</sub> = cos²θ C<sub>p</sub> + sin²θ C<sub>a</sub> + C<sub>v</sub><span class="n">(1)</span></div>
+  <div class="eq">E<sub>1</sub> = E<sub>s</sub> β³ cos θ / [(α + sin θ) D<sub>1</sub>], &nbsp;&nbsp;
+    E<sub>2</sub> = E<sub>s</sub> β³ (α + sin θ) / [cos θ D<sub>2</sub>]<span class="n">(2)</span></div>
+  <div class="eq">ν<sub>12</sub> = sin θ cos²θ (C<sub>p</sub> − C<sub>a</sub>) / [(α + sin θ) D<sub>1</sub>], &nbsp;&nbsp;
+    ν<sub>21</sub> = sin θ (α + sin θ)(C<sub>p</sub> − C<sub>a</sub>) / D<sub>2</sub><span class="n">(3)</span></div>
+  <h3>Gibson &amp; Ashby [4]</h3>
+  <p>Walls bend only: C<sub>p</sub> = 1, C<sub>a</sub> = C<sub>v</sub> = 0. The model is the stiffest of the
+    linear three in Poisson's ratio and, for θ = −30° with h/l = 2, gives exactly ν = −1 and E<sub>1</sub> = E<sub>2</sub>.</p>
+  <h3>Masters &amp; Evans [5]</h3>
+  <p>Adds axial stretching of the walls, C<sub>a</sub> = β², C<sub>v</sub> = 2αβ², and optionally a hinge
+    compliance at the joints, C<sub>p</sub> = 1 + K<sub>f</sub>/K<sub>h</sub>. Stretching softens the cell and
+    weakens the auxetic effect; hinging is not used here (rigid joints).</p>
+  <h3>Malek &amp; Gibson [6]</h3>
+  <p>Recognises that thick walls meet in solid joints, so only the shorter lengths l<sub>b</sub> = l − t/(2 cos θ)
+    and h<sub>b</sub> = h − t(1 − sin θ)/cos θ bend, and adds Timoshenko shear: C<sub>p</sub> = 1 + (2.4 + 1.5ν<sub>s</sub>)
+    (t/l<sub>b</sub>)². The paper validates θ &gt; 0 only; negative θ is an extrapolation.</p>
+  <div class="folio">5</div>
+</section>
+
+<section class="page">
+  <div class="rh"><span>II · Four analytical models</span><span>Large deflection</span></div>
+  <h3 style="margin-top:0;">Ohtaki [7]</h3>
+  <p>Ohtaki et al. treat each half inclined wall as an <i>elastica</i>: an inextensible beam allowed large
+    rotations. With φ(s) the wall angle along its length and forces non-dimensionalised by E<sub>s</sub>I/(l/2)²,</p>
+  <div class="eq">φ″ = f<sub>x</sub> sin φ − f<sub>y</sub> cos φ, &nbsp;&nbsp; φ(0) = θ, &nbsp; φ′(1) = 0<span class="n">(4)</span></div>
+  <p>which is solved by shooting for each load step. The result is a nonlinear stress–strain curve and a
+    Poisson's ratio that changes with strain. Its first load step reproduces Gibson &amp; Ashby, which was used
+    to verify the implementation. In tension along x<sub>1</sub> the walls straighten and the strain saturates at
+    1/cos θ − 1; in x<sub>2</sub> compression the curve stiffens sharply past about 20 % as the walls lock, since
+    the model ignores wall contact.</p>
+  <h2>2.2 &nbsp;Predictions for the two midsole cells</h2>
+  <p>Chapter V selects two cells: a stiffer forefoot cell (θ −30°, l 4, h 8, t 1.6 mm; t/l = 0.40) and a softer
+    midfoot/heel cell (θ −30°, l 5, h 10, t 1.0 mm; t/l = 0.20). Figure 5 compares the four models for both.</p>
+  <figure><img src="fig/model_compare_moduli.png" style="width:100%;">
+    <figcaption><b>Fig. 5</b>Small-strain in-plane properties. Filled: forefoot cell; open: midfoot/heel cell;
+      red line: ANSYS (forefoot cell, Chapter III).</figcaption></figure>
+  <table class="t">
+    <tr><th>Forefoot cell</th><th>E<sub>1</sub> (MPa)</th><th>E<sub>2</sub> (MPa)</th><th>ν<sub>12</sub></th><th>ν<sub>21</sub></th></tr>
+    <tr><td>Gibson &amp; Ashby</td><td>2.85</td><td>2.85</td><td>−1.00</td><td>−1.00</td></tr>
+    <tr><td>Masters &amp; Evans</td><td>1.93</td><td>1.50</td><td>−0.57</td><td>−0.44</td></tr>
+    <tr><td>Malek &amp; Gibson</td><td>2.37</td><td>1.99</td><td>−0.59</td><td>−0.50</td></tr>
+    <tr><td>Ohtaki (first step)</td><td>2.86</td><td>2.85</td><td>−1.00</td><td>−1.00</td></tr>
+  </table>
+  <p>The models span a factor of two in stiffness and a factor of two in Poisson's ratio for the same cell.
+    Adding mechanisms (stretching, shear) softens the cell and weakens the auxetic effect; shortening the bending
+    length (rigid joints) stiffens it again. Which of these dominates for a thick printed wall is the question for
+    the finite-element comparison.</p>
+  <div class="folio">6</div>
+</section>
+
+<!-- ============ III. ANSYS ============ -->
+<section class="page">
+  <div class="opener">
+    <div class="numeral">III</div>
+    <h1 style="margin-top:4mm;">Finite-element comparison</h1>
+    <div class="lead">A 4 × 4 block of the forefoot cell in ANSYS Mechanical</div>
+  </div>
+  <h2>3.1 &nbsp;Model</h2>
+  <p>The forefoot cell was modelled as a 4 × 4 block, 27.7 mm wide, with the right edge closed and the top
+    mirrored from the bottom so the block is 180° symmetric; walls span 56 mm in height. Solid strips 1.6 mm
+    thick carry the load into the lattice (top and bottom for x<sub>2</sub> loading, left and right for
+    x<sub>1</sub>). The geometry was generated as an exact outline and analysed as a 2D plane-stress body,
+    5 mm thick, meshed with quadrilaterals at about 0.3 mm (four or more elements through each wall).</p>
+  <ul class="l">
+    <li><b>Run A</b> — x<sub>2</sub> compression to 1 %, linear elastic (E<sub>s</sub> 19.3 MPa, ν<sub>s</sub> 0.45).</li>
+    <li><b>Run B</b> — x<sub>1</sub> tension to 1 %, same material.</li>
+    <li><b>Run C</b> — x<sub>2</sub> compression to 30 %, Neo-Hookean (μ = 6.66 MPa, D<sub>1</sub> = 0.0311 MPa⁻¹),
+      large deflection.</li>
+  </ul>
+  <p>Strains were measured on the middle 2 × 2 cells, away from the strips, from probe displacements at four
+    wall joints: ε<sub>2</sub> over a 12 mm cell pitch and ε<sub>1</sub> over 6.93 mm. Stress is the strip
+    reaction divided by the loaded cross-section.</p>
+  <div class="row">
+    <figure><img src="../../ansys_stuff/block_fore.png" style="height:70mm; margin:auto;">
+      <figcaption><b>Fig. 6</b>Block geometry for runs A and C (strips top and bottom).</figcaption></figure>
+    <figure><div class="ph" style="height:70mm;">ANSYS mesh close-up<br>with probe locations P1–P4</div>
+      <figcaption><b>Fig. 7</b>Mesh and probe joints.</figcaption></figure>
+  </div>
+  <div class="folio">7</div>
+</section>
+
+<section class="page">
+  <div class="rh"><span>III · Finite-element comparison</span><span>Small strain</span></div>
+  <h2 style="margin-top:0;">3.2 &nbsp;Small-strain properties</h2>
+  <table class="t">
+    <tr><th>Forefoot cell</th><th>E<sub>1</sub> (MPa)</th><th>E<sub>2</sub> (MPa)</th><th>ν<sub>12</sub></th><th>ν<sub>21</sub></th></tr>
+    <tr class="hi"><td>ANSYS</td><td>3.45</td><td>4.35</td><td>−0.14</td><td>−0.33</td></tr>
+    <tr><td>Gibson &amp; Ashby</td><td>2.85 (−17 %)</td><td>2.85 (−34 %)</td><td>−1.00</td><td>−1.00</td></tr>
+    <tr><td>Masters &amp; Evans</td><td>1.93 (−44 %)</td><td>1.50 (−66 %)</td><td>−0.57</td><td>−0.44</td></tr>
+    <tr><td>Malek &amp; Gibson</td><td>2.37 (−31 %)</td><td>1.99 (−54 %)</td><td>−0.59</td><td>−0.50</td></tr>
+  </table>
+  <p>Every model under-predicts the stiffness, Gibson &amp; Ashby least, and every model over-predicts the
+    auxetic effect, most of all sideways (ν<sub>12</sub>). Three effects explain this. At t/l = 0.4 the solid
+    joints occupy a large share of each wall, so less of it bends — Malek &amp; Gibson capture part of this
+    through l<sub>b</sub>, but not enough. Thick walls also shear and compress in ways the beam models only
+    partly include. Finally, the bonded strips restrain the end rows from contracting sideways, and in an
+    auxetic block this restraint stiffens the interior as well: the middle cells saw only half of the applied
+    strain.</p>
+  <p>The two runs are not fully consistent with a homogeneous orthotropic material (ν<sub>12</sub>/E<sub>1</sub> =
+    −0.040 against ν<sub>21</sub>/E<sub>2</sub> = −0.076). A 4 × 4 block is too small to be free of its boundaries;
+    a larger block or periodic boundary conditions would tighten the comparison.</p>
+  <div class="row">
+    <figure><div class="ph" style="height:66mm;">Run A — deformed shape,<br>vertical displacement contour</div>
+      <figcaption><b>Fig. 8</b>Run A, x<sub>2</sub> compression at 1 %.</figcaption></figure>
+    <figure><div class="ph" style="height:66mm;">Run B — deformed shape,<br>horizontal displacement contour</div>
+      <figcaption><b>Fig. 9</b>Run B, x<sub>1</sub> tension at 1 %.</figcaption></figure>
+  </div>
+  <figure><div class="ph" style="height:40mm;">Equivalent stress contour, run A — showing joint stress concentration</div>
+    <figcaption><b>Fig. 10</b>Stress concentrates at the joints, where the thick walls meet.</figcaption></figure>
+  <div class="folio">8</div>
+</section>
+
+<section class="page">
+  <div class="rh"><span>III · Finite-element comparison</span><span>Large strain</span></div>
+  <h2 style="margin-top:0;">3.3 &nbsp;Large strain and collapse</h2>
+  <p>In run C the stress rises almost linearly to a peak of <b>0.36 MPa</b> at 8.7 % strain in the middle cells
+    (17 % across the whole block), then falls. Past the peak the middle cells unload slightly while other rows
+    continue to collapse: the deformation localises and the cells buckle, the classic onset of a honeycomb's
+    collapse plateau. The solution stopped converging at 20 % overall strain through excessive element
+    distortion, by which point collapse was well developed.</p>
+  <figure><img src="fig/model_compare_curves.png" style="width:100%;">
+    <figcaption><b>Fig. 11</b>Forefoot cell under x<sub>2</sub> compression. ANSYS points (red) are shown up to the
+      load peak; the shaded band is the strain targeted in the midsole optimisation.</figcaption></figure>
+  <p>Up to the peak, ANSYS follows <b>Ohtaki</b> closely and lies above the three linear models, which fall
+    further behind as strain grows. Ohtaki's steep stiffening past 20 % never occurs: the real cell buckles first.
+    Poisson's ratio grows more negative with strain, from −0.40 to −0.51 — Ohtaki's trend, but much milder, and
+    close to the Masters &amp; Evans and Malek &amp; Gibson values.</p>
+  <div class="row">
+    <figure><div class="ph" style="height:52mm;">Run C at 0 %</div><figcaption><b>Fig. 12a</b></figcaption></figure>
+    <figure><div class="ph" style="height:52mm;">Run C at peak load (≈17 %)</div><figcaption><b>Fig. 12b</b></figcaption></figure>
+    <figure><div class="ph" style="height:52mm;">Run C after collapse (≈20 %)</div><figcaption><b>Fig. 12c</b></figcaption></figure>
+  </div>
+  <p style="margin-top:2mm;">For design, the forefoot cell therefore offers about 0.36 MPa before it collapses.
+    Peak forefoot pressures in running are of a similar order, so collapse is within reach — a feature if a
+    controlled plateau is wanted for cushioning, a limit if it is not.</p>
+  <div class="folio">9</div>
+</section>
+
+<!-- ============ IV. APPLICATION ============ -->
+<section class="page">
+  <div class="opener">
+    <div class="numeral">IV</div>
+    <h1 style="margin-top:4mm;">Application: running footwear</h1>
+    <div class="lead">Why put an auxetic lattice under the foot?</div>
+  </div>
+  <p>A running midsole must absorb impact, return energy and stay stable as the load moves from heel or
+    forefoot to the toes in about a fifth of a second. Conventional foams spread outward under load. An auxetic
+    structure instead gathers material under the load, increasing local stiffness where the foot presses
+    (indentation resistance), and curves synclastically, so it can cup the foot rather than flatten beneath it.
+    These properties are repeatedly cited as motivation for auxetics in protective equipment and footwear [3, 8].</p>
+  <h2>4.1 &nbsp;Existing work</h2>
+  <p>Reviews of auxetic metamaterials list sports footwear among the most promising applications, alongside
+    protective padding and impact absorbers [3, 8]. Additively manufactured lattice midsoles are now commercial,
+    which makes graded, printed cells a realistic manufacturing route; most commercial lattices are, however,
+    conventional rather than auxetic. <i>[Add footwear-specific auxetic studies here — e.g. printed re-entrant
+    or chiral insoles and midsoles, plantar-pressure and comfort studies.]</i></p>
+  <h2>4.2 &nbsp;Running mechanics</h2>
+  <p>Ground reaction force in running peaks at two to three times body weight. The centre of pressure travels
+    from the heel (or midfoot, for forefoot strikers) to the metatarsal heads and toes, and the
+    metatarsophalangeal (MTP) joint dorsiflexes by roughly 30–40° before toe-off [9, 10]. A midsole therefore sees
+    a moving, uneven load and a bending demand concentrated behind the toes. Chapter V uses one measured stance
+    from the public running dataset of Fukuchi et al. [11] to reproduce this load.</p>
+  <figure><div class="ph" style="height:58mm;">Literature figure / photograph — example of an auxetic or lattice midsole<br>(with permission or redrawn)</div>
+    <figcaption><b>Fig. 13</b>Precedent: printed lattice midsoles.</figcaption></figure>
+  <div class="folio">10</div>
+</section>
+
+<!-- ============ V. MIDSOLE ============ -->
+<section class="page">
+  <div class="opener">
+    <div class="numeral">V</div>
+    <h1 style="margin-top:4mm;">Midsole optimisation</h1>
+    <div class="lead">Filling a midsole, loading it with a running stance, choosing a cell per zone</div>
+  </div>
+  <h2>5.1 &nbsp;Filling the midsole</h2>
+  <p>A bulk midsole volume (flat bottom, curved footbed, 270 mm long) was cut into 34 slices across the foot,
+    5 mm thick with 3 mm gaps. Each slice is filled with the re-entrant lattice and closed by a skin wall; a flat
+    bottom plate and a top plate following the footbed join the slices into a single watertight body (242 cm³).
+    Because the slices lie across the foot, the lattice plane is the y–z plane and its x<sub>2</sub> axis is
+    vertical — the direction of the foot load.</p>
+  <div class="row">
+    <figure><div class="ph" style="height:40mm;">CAD screenshot — bulk midsole volume (midsole_base.step)</div>
+      <figcaption><b>Fig. 14</b>Bulk midsole volume.</figcaption></figure>
+    <figure><img src="fig/cover_stack.png" style="height:40mm; margin:auto;">
+      <figcaption><b>Fig. 15</b>Slice stack, every third slice shown.</figcaption></figure>
+  </div>
+  <h2>5.2 &nbsp;The pseudo-foot</h2>
+  <p>The foot is represented by three rigid bodies — a heel sphere, a midfoot block and a toe block — joined by
+    hinges along y at the ankle, between heel and midfoot (three-quarters up the midfoot's rear face) and at the
+    MTP (60 % up the gap between midfoot and toes). The heel and midfoot are kept rigid together, since the
+    dataset has no midfoot marker.</p>
+  <figure><img src="fig/cover_side.png" style="height:58mm; margin:auto;">
+    <figcaption><b>Fig. 16</b>Pseudo-foot at mid-stance over the midsole section (y = 60 mm). Red: hinges.</figcaption></figure>
+  <div class="folio">11</div>
+</section>
+
+<section class="page dark">
+  <div class="rh" style="color:#8f8c84;"><span>V · Midsole optimisation</span><span>Running data</span></div>
+  <h2 style="margin-top:0; color:#eceae4;">5.3 &nbsp;From running data to foot motion</h2>
+  <p style="color:#d8d5ce;">One right-foot stance (213 ms, peak 1523 N) of subject 1 at 3.5 m/s was taken from the
+    Fukuchi dataset. The vertical force and the centre of pressure, projected on the heel–metatarsal line, split
+    the load into heel and forefoot shares. The heel and metatarsal markers give the foot's pitch and the shank
+    markers the ankle angle, both relative to standing; the MTP bend follows Stefanyshyn &amp; Nigg [9]. All
+    signals are smoothed with a zero-lag exponential moving average. This runner lands on the forefoot, so the
+    heel carries little load.</p>
+  <figure><img src="fig/film_dark.png" style="width:100%;">
+    <figcaption style="color:#8f8c84;"><b>Fig. 17</b>Twelve frames of the stance: pseudo-foot posed from the measured angles.</figcaption></figure>
+  <figure><img src="fig/stance_dark.png" style="width:70%; margin:auto;">
+    <figcaption style="color:#8f8c84; text-align:center;"><b>Fig. 18</b>Force split (white forefoot, red heel) and joint angles.</figcaption></figure>
+  <div class="folio" style="color:#8f8c84;">12</div>
+</section>
+
+<section class="page" style="background:#f4efe8;">
+  <div class="rh"><span>V · Midsole optimisation</span><span>Conforming</span></div>
+  <h2 style="margin-top:0;">5.4 &nbsp;Loading the slices: a beam on a lattice foundation</h2>
+  <p>The posed foot is lowered into the midsole by a <i>sink</i>. For each slice, the top plate and skin are
+    treated as a beam across the foot resting on a Winkler foundation of lattice columns. Each column's stress
+    follows Ohtaki's compression curve at its strain, and the rigid foot acts as an indenter wherever it would cut
+    into the top surface. The sink is then solved for every frame so that the summed slice forces equal the
+    measured ground reaction.</p>
+  <figure><img src="fig/loadpath.png" style="width:78%; margin:auto;">
+    <figcaption style="text-align:center;"><b>Fig. 19</b>Load path across the foot at a forefoot slice: (1) pseudo-foot, (2) top plate, (3) re-entrant
+      slice, (4) bottom plate, (5) ground reaction.</figcaption></figure>
+  <p>The foundation idea assumes the slices interact only through the plates and that neighbouring columns do not
+    shear against each other. Chapter III suggests the Ohtaki law is reasonable up to buckling, so strains beyond
+    about 17 % (overall) should be read with caution.</p>
+  <div class="folio">13</div>
+</section>
+
+<section class="page">
+  <div class="rh"><span>V · Midsole optimisation</span><span>Results</span></div>
+  <h2 style="margin-top:0;">5.5 &nbsp;Zone search</h2>
+  <p>The midsole was divided at the hinge lines into forefoot, midfoot and heel. For each zone, 200 candidate cells
+    (θ −10° to −30°, l 3.5–7 mm, h/l 1–2, t 1.0–2.6 mm, with t/l ≤ 0.4, a clear bow-tie gap ≥ 2 mm and a cell no
+    taller than 16 mm) were ranked by Masters &amp; Evans E<sub>2</sub>. The full stance was repeated, moving each
+    zone toward a peak column strain of 17.5 % and preferring the most auxetic cell among near ties.</p>
+  <table class="t">
+    <tr><th>Zone</th><th>θ</th><th>l</th><th>h</th><th>t (mm)</th><th>E<sub>2</sub> (MPa)</th><th>ν<sub>21</sub></th><th>Peak strain</th></tr>
+    <tr><td>Forefoot</td><td>−30°</td><td>4</td><td>8</td><td>1.6</td><td>1.50</td><td>−0.44</td><td>19.8 %</td></tr>
+    <tr><td>Midfoot</td><td>−30°</td><td>5</td><td>10</td><td>1.0</td><td>0.29</td><td>−0.78</td><td>10.5 %</td></tr>
+    <tr><td>Heel</td><td>−30°</td><td>5</td><td>10</td><td>1.0</td><td>0.29</td><td>−0.78</td><td>8.4 %</td></tr>
+  </table>
+  <figure><img src="fig/strain_map.png" style="width:100%;">
+    <figcaption><b>Fig. 20</b>Peak column strain per slice through the stance (zoned lattice). Dashed: hinge lines.</figcaption></figure>
+  <div class="row" style="align-items:center;">
+    <figure style="flex:1;"><img src="fig/sink.png">
+      <figcaption><b>Fig. 21</b>Sink of the foot into the sole, solved per frame.</figcaption></figure>
+    <p style="flex:1.3; font-size:10.5pt;">Strain concentrates under the metatarsal heads. In the midfoot and heel,
+      strain is set by the foot's shape sinking into the sole rather than by the force there, so softer cells
+      barely change it; the search therefore settles on the softest, most auxetic cell allowed. This holds for a
+      forefoot striker only: a heel striker would need a stiffer heel.</p>
+  </div>
+  <div class="folio">14</div>
+</section>
+
+<section class="page dark">
+  <div class="rh" style="color:#8f8c84;"><span>V · Midsole optimisation</span><span>Candidates</span></div>
+  <figure style="margin-top:0;"><img src="fig/grid_dark.png" style="width:100%;">
+    <figcaption style="color:#8f8c84;"><b>Fig. 22</b>Forty of the candidate cells, softest to stiffest by Masters &amp; Evans
+      E<sub>2</sub>. Red: cells chosen for the forefoot and the midfoot/heel.</figcaption></figure>
+  <p style="color:#d8d5ce; margin-top:6mm;">The chapter III results revise this picture. At t/l = 0.4 the chosen forefoot
+    cell is about 2.9 times stiffer than the Masters &amp; Evans value used in the search, so the real forefoot strains
+    would sit below the predicted 19.8 % — and below the buckling strain. A second search using an ANSYS-calibrated
+    stiffness, or a thinner wall (t/l ≈ 0.25–0.3) that stays closer to beam theory and keeps more of the auxetic
+    effect, are the natural next steps.</p>
+  <figure><img src="fig/section_render.png" style="width:100%;">
+    <figcaption style="color:#8f8c84;"><b>Fig. 23</b>Zoned midsole cut across the foot at x = 38 mm, through the forefoot lattice.</figcaption></figure>
+  <div class="folio" style="color:#8f8c84;">15</div>
+</section>
+
+<section class="page" style="background:var(--warm);">
+  <div class="rh"><span>V · Midsole optimisation</span><span>Assembly</span></div>
+  <figure style="margin-top:0;"><img src="fig/exploded_render.png" style="width:88%; margin:auto;">
+    <figcaption style="text-align:center;"><b>Fig. 24</b>Exploded assembly: pseudo-foot (red), top plate, 34 zoned slices,
+      bottom plate. One watertight body, 242 cm³.</figcaption></figure>
+  <div class="row">
+    <figure><div class="ph" style="height:46mm;">Slicer preview of the midsole<br>(print orientation, supports)</div>
+      <figcaption><b>Fig. 25</b>Print preparation.</figcaption></figure>
+    <figure><div class="ph" style="height:46mm;">Photograph of the printed midsole or section</div>
+      <figcaption><b>Fig. 26</b>Printed result.</figcaption></figure>
+  </div>
+  <div class="folio">16</div>
+</section>
+
+<!-- ============ VI. DISCUSSION ============ -->
+<section class="page">
+  <div class="opener">
+    <div class="numeral">VI</div>
+    <h1 style="margin-top:4mm;">Discussion and outlook</h1>
+  </div>
+  <h2>6.1 &nbsp;What the models are good for</h2>
+  <p>For printable re-entrant cells the beam models are a starting point, not an answer. Gibson &amp; Ashby and
+    Ohtaki bracket the small-strain stiffness best; Masters &amp; Evans and Malek &amp; Gibson bracket Poisson's
+    ratio best; Ohtaki alone captures the nonlinear rise, but not buckling. Thick walls (t/l = 0.4) push all four
+    beyond their assumptions.</p>
+  <h2>6.2 &nbsp;Limitations</h2>
+  <ul class="l">
+    <li>One runner, a forefoot striker; a heel striker would load the heel very differently.</li>
+    <li>The MTP bend comes from the literature, and the heel–midfoot joint is rigid.</li>
+    <li>E<sub>s</sub> = 19.3 MPa is assumed; the printed TPU will set the true value.</li>
+    <li>The 4 × 4 ANSYS block is boundary-affected; periodic conditions would be cleaner.</li>
+    <li>Slices interact only through the plates (Winkler, no inter-column shear).</li>
+    <li>The zone search used Masters &amp; Evans, which ANSYS shows is too soft at this thickness.</li>
+  </ul>
+  <h2>6.3 &nbsp;Next steps</h2>
+  <p>Compression tests of the printed block and a solid TPU coupon will fix E<sub>s</sub> and give an
+    experimental curve to set against Figure 11. The loading pipeline is independent of the cell: the chiral,
+    rotating-square and tensegrity strands can be run through the same stance and midsole for a like-for-like
+    comparison. Beyond that, a three-dimensional re-entrant lattice would remove the slice gaps, carry the forefoot
+    flex itself and dome under the foot.</p>
+  <figure><div class="ph" style="height:52mm;">Test set-up and measured force–displacement curve of the printed block</div>
+    <figcaption><b>Fig. 27</b>Experimental validation (to follow).</figcaption></figure>
+  <div class="folio">17</div>
+</section>
+
+<!-- ============ REFERENCES ============ -->
+<section class="page refs">
+  <div class="rh"><span>Re-entrant auxetics</span><span>References</span></div>
+  <h1 style="font-size:18pt; margin-bottom:6mm;">References</h1>
+  <p>[1] Lakes, R. (1987). Foam structures with a negative Poisson's ratio. <i>Science</i>, 235, 1038–1040.</p>
+  <p>[2] Evans, K. E., Nkansah, M. A., Hutchinson, I. J., &amp; Rogers, S. C. (1991). Molecular network design. <i>Nature</i>, 353, 124.</p>
+  <p>[3] Ren, X., Das, R., Tran, P., Ngo, T. D., &amp; Xie, Y. M. (2018). Auxetic metamaterials and structures: a review. <i>Smart Materials and Structures</i>, 27, 023001.</p>
+  <p>[4] Gibson, L. J., &amp; Ashby, M. F. (1997). <i>Cellular Solids: Structure and Properties</i> (2nd ed.). Cambridge University Press.</p>
+  <p>[5] Masters, I. G., &amp; Evans, K. E. (1996). Models for the elastic deformation of honeycombs. <i>Composite Structures</i>, 35, 403–422.</p>
+  <p>[6] Malek, S., &amp; Gibson, L. (2015). Effective elastic properties of periodic hexagonal honeycombs. <i>Mechanics of Materials</i>, 91, 226–240.</p>
+  <p>[7] Ohtaki, H., Hu, G., Nagasaka, Y., &amp; Kotosaka, S. (2004). Analysis of negative Poisson's ratio of re-entrant honeycombs. <i>[verify journal and pages]</i></p>
+  <p>[8] <i>[Add a footwear-specific auxetic reference — e.g. a study of printed auxetic insoles or midsoles.]</i></p>
+  <p>[9] Stefanyshyn, D. J., &amp; Nigg, B. M. (1997). Mechanical energy contribution of the metatarsophalangeal joint to running and sprinting. <i>Journal of Biomechanics</i>, 30, 1081–1085.</p>
+  <p>[10] Wang et al. (2021). <i>[MTP joint kinematics in running — PMC8093456; complete the citation]</i></p>
+  <p>[11] Fukuchi, R. K., Fukuchi, C. A., &amp; Duarte, M. (2017). A public dataset of running biomechanics and the effects of running speed on lower extremity kinematics and kinetics. <i>PeerJ</i>, 5, e3298.</p>
+  <p>[12] Wu et al. (2023). <i>Frontiers in Bioengineering and Biotechnology</i>, doi:10.3389/fbioe.2023.1251324. <i>[complete the citation]</i></p>
+  <p class="note" style="text-indent:0; padding-left:0; margin-top:8mm;">Citations marked in square-bracketed italics need checking against the
+    original sources before submission.</p>
+  <div class="folio">18</div>
+</section>
+
+</body>
+</html>

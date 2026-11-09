@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Auxetic Midsole</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  @page { size: 420mm 297mm; margin: 0; }
+  :root {
+    --ink: #1b1b1a; --muted: #6b6a66; --paper: #fcfcfb; --dark: #141413;
+    --accent: #c0392b; --warm: #e9e5de; --ground: #7fb7b2;
+    --serif: "Cormorant Garamond", Georgia, serif;
+    --sans: "Inter", "Segoe UI", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #555; }
+  body { font-family: var(--sans); color: var(--ink); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page { width: 420mm; height: 297mm; position: relative; overflow: hidden;
+          page-break-after: always; break-after: page; background: var(--paper); }
+  .dark { background: var(--dark); color: #eceae4; }
+  .warm { background: var(--warm); }
+  img { display: block; max-width: 100%; }
+
+  /* type */
+  .numeral { font-family: var(--serif); font-size: 46pt; font-weight: 400; letter-spacing: 2pt; line-height: 1; }
+  h1 { font-family: var(--serif); font-weight: 400; font-size: 26pt; letter-spacing: 3pt; text-transform: uppercase; }
+  h2 { font-family: var(--serif); font-weight: 400; font-style: italic; font-size: 13pt; color: var(--muted); margin-top: 3mm; }
+  .dark h2 { color: #a9a69e; }
+  p.body { font-family: var(--serif); font-size: 11.5pt; line-height: 1.45; max-width: 105mm; margin-top: 7mm; }
+  .cap { position: absolute; font-size: 6.5pt; color: var(--muted); letter-spacing: .4pt; }
+  .cap b { color: var(--accent); font-weight: 400; margin-right: 3mm; }
+  .dark .cap { color: #8f8c84; }
+  .folio { position: absolute; bottom: 9mm; right: 12mm; font-size: 6.5pt; letter-spacing: 1.5pt; color: var(--muted); }
+  .head { position: absolute; top: 18mm; left: 18mm; }
+  .eq { font-family: var(--serif); font-size: 12pt; line-height: 1.9; }
+  .eq i { font-style: italic; }
+  .tag { display: inline-block; width: 5.5mm; height: 5.5mm; border-radius: 50%; border: .3mm solid currentColor;
+         text-align: center; line-height: 5mm; font-size: 7pt; margin-right: 2.5mm; }
+  table.t { border-collapse: collapse; font-size: 8pt; margin-top: 6mm; }
+  table.t td, table.t th { padding: 1.6mm 3.5mm; text-align: right; border-bottom: .2mm solid #3a3936; font-weight: 300; }
+  table.t th { color: #a9a69e; font-weight: 400; }
+  table.t td:first-child, table.t th:first-child { text-align: left; font-family: var(--serif); font-size: 10pt; font-style: italic; }
+  .light table.t td, .light table.t th { border-color: #d9d8d3; }
+
+  /* cover */
+  .frame { position: absolute; inset: 22mm 30mm; border: .25mm solid #c9c7c1; }
+  .cover-title { position: absolute; top: 50%; left: 0; right: 0; transform: translateY(-50%); text-align: center; }
+  .cover-title h1 { font-size: 34pt; letter-spacing: 6pt; }
+  .cover-title .sub { font-family: var(--serif); font-size: 12pt; letter-spacing: 4pt; text-transform: uppercase; margin-top: 3mm; }
+  .bleed { position: absolute; opacity: .55; }
+</style>
+</head>
+<body>
+
+<!-- 1 COVER -->
+<section class="page">
+  <img class="bleed" src="fig/cover_stack.png" style="top:-14mm; left:-22mm; width:215mm; transform:rotate(-8deg);">
+  <img class="bleed" src="fig/cover_side.png" style="bottom:-6mm; right:-18mm; width:235mm; transform:rotate(-6deg);">
+  <img class="bleed" src="fig/cover_slice.png" style="top:30mm; right:20mm; width:95mm; opacity:.45;">
+  <div class="frame"></div>
+  <div class="cover-title">
+    <h1>Auxetic Midsole</h1>
+    <div class="sub">A re-entrant honeycomb study</div>
+    <div style="font-size:7pt; letter-spacing:2pt; color:var(--muted); margin-top:9mm;">MOS PROJECT &nbsp;·&nbsp; 2026–27</div>
+  </div>
+</section>
+
+<!-- I THE IDEA -->
+<section class="page dark">
+  <div class="head">
+    <div class="numeral">I</div>
+    <h1 style="margin-top:6mm;">A sole that hugs back</h1>
+    <h2>Re-entrant cells contract sideways when squeezed</h2>
+    <p class="body">A conventional foam bulges outward under the foot. A re-entrant honeycomb does the opposite:
+      its bow-tie cells fold inward, gathering material under the load. The midsole is cut into 34 thin
+      slices across the foot, each filled with this lattice, and joined by two plates.</p>
+    <p class="body">The question this study follows: how does each slice deform under a real running stance,
+      and which cell should go where?</p>
+  </div>
+  <img src="fig/side_dark.png" style="position:absolute; right:14mm; bottom:34mm; width:250mm;">
+  <div class="cap" style="right:14mm; bottom:26mm;"><b>01</b>Pseudo-foot at mid-stance over the midsole section, y = 60 mm. Red points: ankle, heel–midfoot and MTP hinges.</div>
+  <div class="folio">I · THE IDEA</div>
+</section>
+
+<!-- II THE CELL / MODELS -->
+<section class="page light">
+  <div class="head">
+    <div class="numeral" style="color:var(--ink)">II</div>
+    <h1 style="margin-top:6mm;">Four ways to read a cell</h1>
+    <h2>Gibson &amp; Ashby · Masters &amp; Evans · Malek &amp; Gibson · Ohtaki</h2>
+  </div>
+  <div style="position:absolute; top:24mm; right:20mm; width:150mm;" class="eq">
+    <div><span class="tag">1</span>wall compliances, in units of <i>l</i>³ / <i>E<sub>s</sub> b t</i>³</div>
+    <div style="margin-left:8mm"><i>C<sub>p</sub></i> = 1 + <i>r<sub>h</sub></i> &nbsp;&nbsp; <i>C<sub>a</sub></i> = (<i>t/l</i>)² &nbsp;&nbsp; <i>C<sub>v</sub></i> = 2 (<i>h/l</i>)(<i>t/l</i>)²</div>
+    <div><span class="tag">2</span><i>E</i>₂ = <i>E<sub>s</sub></i> (<i>t/l</i>)³ (<i>h/l</i> + sin θ) / (cos θ · <i>D</i>₂)</div>
+    <div style="margin-left:8mm"><i>D</i>₂ = cos²θ <i>C<sub>p</sub></i> + sin²θ <i>C<sub>a</sub></i> + <i>C<sub>v</sub></i></div>
+    <div><span class="tag">3</span>Ohtaki: each half wall an elastica, &nbsp;<i>φ″</i> = <i>f<sub>x</sub></i> sin <i>φ</i> − <i>f<sub>y</sub></i> cos <i>φ</i></div>
+  </div>
+  <img src="fig/model_compare_moduli.png" style="position:absolute; left:18mm; bottom:34mm; width:384mm;">
+  <div class="cap" style="left:18mm; bottom:22mm;"><b>02</b>G&amp;A keeps bending only (<i>C<sub>a</sub></i> = <i>C<sub>v</sub></i> = 0); M&amp;E adds stretching; M&amp;G shortens the bending length at rigid joints; Ohtaki lets the walls rotate freely.</div>
+  <div class="folio">II · MODELS</div>
+</section>
+
+<!-- III MODELS VS ANSYS -->
+<section class="page light">
+  <div class="head">
+    <div class="numeral">III</div>
+    <h1 style="margin-top:6mm;">Under the forefoot</h1>
+    <h2>Small strain agrees; large strain is where the models part</h2>
+  </div>
+  <img src="fig/model_compare_curves.png" style="position:absolute; left:18mm; bottom:36mm; width:384mm;">
+  <div class="cap" style="left:18mm; bottom:26mm;"><b>03</b>Forefoot cell θ −30°, l 4, h 8, t 1.6 mm. ANSYS plane-stress results (4 × 4 cells, 5 mm thick) are overlaid in red once run.</div>
+  <div class="folio">III · VALIDATION</div>
+</section>
+
+<!-- IV RUNNING DATA -->
+<section class="page dark">
+  <div class="head">
+    <div class="numeral">IV</div>
+    <h1 style="margin-top:6mm;">213 milliseconds</h1>
+    <h2>One right-foot stance at 3.5 m/s, Fukuchi et al. dataset</h2>
+    <p class="body">Force and centre of pressure give the load and its heel-to-toe split; markers give the
+      foot pitch and ankle angle. The toe bend follows Stefanyshyn &amp; Nigg. This runner lands on the
+      forefoot: the heel barely carries load.</p>
+  </div>
+  <img src="fig/stance_dark.png" style="position:absolute; left:18mm; bottom:30mm; width:150mm;">
+  <img src="fig/film_dark.png" style="position:absolute; right:14mm; top:22mm; width:250mm;">
+  <div class="cap" style="right:14mm; top:150mm;"><b>04</b>Twelve frames of stance: pseudo-foot posed from the measured angles, heel and midfoot rigid, toes bending about the MTP.</div>
+  <div class="cap" style="left:18mm; bottom:22mm;"><b>05</b>Force split (white forefoot, red heel) and joint angles, smoothed by a zero-lag moving average.</div>
+  <div class="folio">IV · MOTION</div>
+</section>
+
+<!-- V LOAD PATH -->
+<section class="page" style="background:#f4efe8;">
+  <div class="head">
+    <div class="numeral">V</div>
+    <h1 style="margin-top:6mm;">Load path</h1>
+    <h2>Each slice is a beam on a lattice foundation</h2>
+    <div style="margin-top:12mm; font-family:var(--serif); font-size:11.5pt; line-height:2.1; max-width:115mm;">
+      <div><span class="tag">1</span>The posed foot sinks until the slices carry the measured force.</div>
+      <div><span class="tag">2</span>The top plate bends across the foot, spreading the load.</div>
+      <div><span class="tag">3</span>Every lattice column answers with Ohtaki's large-strain stress.</div>
+      <div><span class="tag">4</span>The bottom plate ties the slices together.</div>
+      <div><span class="tag">5</span>The ground returns F, row by row through the stance.</div>
+    </div>
+  </div>
+  <img src="fig/loadpath.png" style="position:absolute; right:22mm; top:34mm; height:205mm;">
+  <div class="cap" style="right:22mm; bottom:18mm;"><b>06</b>Cut-away across the foot at x = 34.5 mm (forefoot slice).</div>
+  <div class="folio">V · LOAD PATH</div>
+</section>
+
+<!-- VI CONFORMING -->
+<section class="page light">
+  <div class="head">
+    <div class="numeral">VI</div>
+    <h1 style="margin-top:6mm;">Where the sole works</h1>
+    <h2>Peak lattice strain, slice by slice, through the stance</h2>
+    <p class="body">For every frame the sink is solved so the slice forces add up to the measured load.
+      Strain gathers under the metatarsal heads and fades toward the heel.</p>
+    <img src="fig/sink.png" style="width:110mm; margin-top:14mm;">
+    <div class="cap" style="position:static; margin-top:2mm;"><b>08</b>Sink of the foot into the sole, solved per frame.</div>
+  </div>
+  <img src="fig/strain_map.png" style="position:absolute; right:16mm; top:30mm; width:250mm;">
+  <div class="cap" style="right:16mm; top:150mm;"><b>07</b>Zoned lattice. Dashed: the hinge lines that set the zone limits.</div>
+  <div class="folio">VI · CONFORMING</div>
+</section>
+
+<!-- VII SEARCH -->
+<section class="page dark">
+  <div class="head">
+    <div class="numeral">VII</div>
+    <h1 style="margin-top:6mm;">Two hundred cells</h1>
+    <h2>Searched per zone for a 15–20 % peak strain</h2>
+    <table class="t">
+      <tr><th>zone</th><th>θ</th><th>l</th><th>h</th><th>t</th><th>E₂ MPa</th><th>ν₂₁</th><th>peak</th></tr>
+      <tr><td>forefoot</td><td>−30°</td><td>4</td><td>8</td><td>1.6</td><td>1.50</td><td>−0.44</td><td>19.8 %</td></tr>
+      <tr><td>midfoot</td><td>−30°</td><td>5</td><td>10</td><td>1.0</td><td>0.29</td><td>−0.78</td><td>10.5 %</td></tr>
+      <tr><td>heel</td><td>−30°</td><td>5</td><td>10</td><td>1.0</td><td>0.29</td><td>−0.78</td><td>8.4 %</td></tr>
+    </table>
+    <p class="body" style="font-size:10.5pt;">Midfoot and heel strain is set by the foot's shape, not its force,
+      so the search settles on the softest, most auxetic cell allowed.</p>
+  </div>
+  <img src="fig/grid_dark.png" style="position:absolute; right:14mm; top:20mm; width:245mm;">
+  <div class="cap" style="right:14mm; bottom:20mm;"><b>09</b>Forty of the candidates, softest to stiffest (M&amp;E). Red: chosen.</div>
+  <div class="folio">VII · SEARCH</div>
+</section>
+
+<!-- VIII SECTION -->
+<section class="page dark">
+  <div class="head" style="top:14mm;">
+    <div class="numeral">VIII</div>
+    <h1 style="margin-top:4mm;">Section</h1>
+  </div>
+  <img src="fig/side_dark.png" style="position:absolute; left:130mm; top:12mm; width:190mm; opacity:.85; z-index:2; mix-blend-mode:lighten;">
+  <img src="fig/section_render.png" style="position:absolute; left:95mm; bottom:22mm; width:250mm;">
+  <div class="cap" style="left:18mm; bottom:10mm;"><b>10</b>Zoned midsole cut across the foot at x = 38 mm, through the forefoot lattice. Above: the stance elevation.</div>
+</section>
+
+<!-- IX EXPLODED -->
+<section class="page warm">
+  <div style="position:absolute; left:14mm; top:16mm; width:62mm;">
+    <div class="numeral" style="font-size:34pt;">IX</div>
+    <h1 style="font-size:16pt; margin-top:4mm;">Assembly</h1>
+    <div style="margin-top:8mm; display:grid; gap:4mm;">
+      <div style="border:.25mm solid var(--ink); padding:2mm; background:var(--paper);"><img src="fig/cover_slice.png"><div class="cap" style="position:static; margin-top:1mm;"><b>a</b>forefoot slice</div></div>
+      <div style="border:.25mm solid var(--ink); padding:2mm; background:var(--paper);"><img src="fig/loadpath.png" style="height:38mm; margin:auto;"><div class="cap" style="position:static; margin-top:1mm;"><b>b</b>load path</div></div>
+      <div style="border:.25mm solid var(--ink); padding:2mm; background:var(--paper);"><img src="fig/sink.png"><div class="cap" style="position:static; margin-top:1mm;"><b>c</b>sink per frame</div></div>
+    </div>
+  </div>
+  <img src="fig/exploded_render.png" style="position:absolute; left:110mm; top:14mm; height:255mm;">
+  <div class="cap" style="left:84mm; bottom:14mm;"><b>11</b>Top to bottom: pseudo-foot (red), top plate, 34 zoned slices, bottom plate. 242 cm³, one watertight body.</div>
+  <div class="folio">IX · ASSEMBLY</div>
+</section>
+
+<!-- X LIMITS -->
+<section class="page">
+  <div class="frame" style="inset:22mm 30mm;"></div>
+  <div style="position:absolute; top:40mm; left:50mm; width:150mm;">
+    <div class="numeral">X</div>
+    <h1 style="margin-top:6mm;">What is not yet known</h1>
+    <div style="margin-top:12mm; font-family:var(--serif); font-size:12pt; line-height:1.9;">
+      <div><span class="tag">1</span>One runner, a forefoot striker: a heel striker needs a stiffer heel.</div>
+      <div><span class="tag">2</span>t/l up to 0.4 strains slender-beam theory; ANSYS decides.</div>
+      <div><span class="tag">3</span>Ohtaki ignores walls touching; trust it to about 20 %.</div>
+      <div><span class="tag">4</span>The heel–midfoot joint is rigid; no midfoot marker exists.</div>
+      <div><span class="tag">5</span>Slices only interact through the plates (Winkler, no shear).</div>
+    </div>
+  </div>
+  <div style="position:absolute; top:40mm; left:230mm; width:140mm;">
+    <h2 style="font-size:15pt; color:var(--ink); margin-top:0;">Next: three dimensions</h2>
+    <p class="body" style="max-width:none;">A strut lattice that is re-entrant along every axis would remove
+      the gaps, carry the forefoot flex itself and dome under the foot instead of saddling. Its stiffness
+      scales with density squared, so the material question remains.</p>
+    <img src="fig/cover_stack.png" style="margin-top:14mm; opacity:.7;">
+  </div>
+  <div class="folio">X · LIMITS</div>
+</section>
+
+</body>
+</html>
