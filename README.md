@@ -25,8 +25,8 @@ puts it to work in a real application.
 |---|---|---|---|---|
 | ⬡ | **[Re-entrant auxetics](reentrant-auxetics/)** | Bow-tie honeycomb whose walls fold inward | A running-shoe midsole, loaded by a measured stance | [Markdown](reentrant-auxetics/report/report.md) · [PDF](reentrant-auxetics/report/Re-entrant_Auxetics_Report.pdf) |
 | ◎ | **[Chiral auxetics](chiral-auxetics/)** | Hexachiral lattice: rings joined by tangent ligaments that wind up as the rings turn | A morphing Eppler 420 airfoil trailing edge | [PDF](chiral-auxetics/Hexachiral_Honeycomb_Report.pdf) |
-| ◇ | **[Rotating squares](rotating-square-auxetics/)** | Rigid squares linked at their corners, counter-rotating as a mechanism | Stage-by-stage MATLAB analysis, own FE solver and printable CAD | [HTML report](rotating-square-auxetics/Rotating_Squares_Report.html) |
-| △ | **[Tensegrity structures](tensegrity-structures/)** | Struts held in a web of tension cables | — | [PDF](tensegrity-structures/Tensegrity_Lattices_Report.pdf) |
+| ◇ | **[Rotating squares](rotating-square-auxetics/)** | Rigid squares linked at their corners, counter-rotating as a mechanism | Stage-by-stage MATLAB analysis, own FE solver and printable CAD | [PDF](rotating-square-auxetics/Rotating_Squares_Report.pdf) · [HTML](rotating-square-auxetics/Rotating_Squares_Report.html) |
+| △ | **[Tensegrity structures](tensegrity-structures/)** | Struts held in a web of tension cables | — | Report in progress |
 
 The **[experimental setup](experimental-setup/)** folder is reserved for the shared compression tests of the
 printed samples; it will be filled in once printing is complete.

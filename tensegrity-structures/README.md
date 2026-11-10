@@ -1,5 +1,7 @@
 # Tensegrity Structures
 
+> **REPORT IN PROGRESS** — the strand report is being written. This page describes the work so far.
+
 ### Struts that never touch, held by cables that never slacken
 
 A **tensegrity** is a network of compression struts held in place only by tension cables — the struts never
@@ -8,9 +10,9 @@ mechanisms that would otherwise be free to move. Change the self-stress and the 
 
 This strand builds on Gilewski et al. (2025), who turned the idea into **2D hexagonal tensegrity-inspired
 cells** that can be 3D-printed, derived their elastic properties in closed form, and tested graded lattices
-in compression.
-
-📄 **Read the report:** [PDF](Tensegrity_Lattices_Report.pdf)
+in compression. The work so far reproduces the paper's continuum model of the hexagonal cells, maps how their
+stiffness and Poisson's ratio depend on cable stiffness and self-stress, analyses a raw compression record of a
+graded lattice, and develops the project's own 2D lattice and 3D column in CAD.
 
 <p align="center">
   <img src="images/Screenshot%202026-11-10%20204637.png" width="420" alt="CAD of the hexagonal tensegrity-inspired lattice">
@@ -48,7 +50,6 @@ a built-in load limiter.
 
 | File | What it is |
 |---|---|
-| `Tensegrity_Lattices_Report.pdf` | Strand report: cell model reproduced, design maps, test analysis, CAD |
 | `Gilewski_2025_2D_Mater._12_045026.pdf` | Reference paper: graded 2D tensegrity-inspired lattices, model and tests |
 | `book-1.pdf` | *Tensegrity Systems*, Skelton & de Oliveira — background theory |
 | `M_hex_1_gra1_RawData_1.csv` | Raw force–displacement record (time, displacement, force; `;`-separated, decimal commas) |

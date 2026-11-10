@@ -1,5 +1,7 @@
 # Rotating-squares auxetic: MATLAB analysis
 
+📄 **Read the report:** [PDF](Rotating_Squares_Report.pdf) · [HTML](Rotating_Squares_Report.html)
+
 **To run:** open `main_rotating_squares.m` and press F5. This folder must be the current folder in MATLAB.
 
 **To change any input:** edit `params_default.m`. It holds every number in the project: geometry, material, printer, plot style and tolerances.
