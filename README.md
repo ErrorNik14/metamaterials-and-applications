@@ -13,11 +13,14 @@ negative Poisson's ratio, and because their behaviour is drawn rather than mixed
 
 This project builds four of them, from first principles to working applications.
 
-<p align="center">
-  <img src="reentrant-auxetics/report/fig/barrel_3d.png" width="720"
-       alt="A conventional honeycomb bulging outward under load next to a re-entrant honeycomb drawing inward">
-  <br><sub>Same compression, opposite response: an ordinary honeycomb barrels out (left), a re-entrant one draws in (right).</sub>
-</p>
+<table align="center">
+  <tr>
+    <td align="center" width="25%"><img src="reentrant-auxetics/report/fig/barrel_3d.png" height="150" alt="Re-entrant block drawing inward next to a barreling hexagonal block"><br><sub><b>Re-entrant</b><br>cells that fold shut</sub></td>
+    <td align="center" width="25%"><img src="chiral-auxetics/images/hexachiral_sample.png" height="150" alt="Hexachiral lattice sample"><br><sub><b>Chiral</b><br>rings that wind up</sub></td>
+    <td align="center" width="25%"><img src="rotating-square-auxetics/report/fig/cover_open.png" height="150" alt="Rotating-squares lattice"><br><sub><b>Rotating squares</b><br>tiles that counter-rotate</sub></td>
+    <td align="center" width="25%"><img src="tensegrity-structures/images/Screenshot%202026-11-10%20204637.png" height="150" alt="Hexagonal tensegrity-inspired lattice"><br><sub><b>Tensegrity</b><br>struts held by cables</sub></td>
+  </tr>
+</table>
 
 ---
 
