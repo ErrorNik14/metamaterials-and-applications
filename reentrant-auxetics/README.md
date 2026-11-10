@@ -1,55 +1,124 @@
-# Re-entrant auxetic midsole: scripts
+# Re-entrant Auxetics
 
-Clean copy of the working scripts. The original working folder is in `../raw_files/`;
-the hand-run ANSYS work stays in `../ansys_stuff/`.
+### From bow-tie cells to a running-shoe midsole
 
-## Layout
+A re-entrant honeycomb is a hexagonal honeycomb with its inclined walls flipped inward, so every cell
+becomes a bow-tie. Squash it and the bow-ties fold shut, pulling material *toward* the load instead of
+pushing it out — exactly what you want under a foot.
+
+This strand asks two questions:
+
+1. **How well do the textbook models describe a cell you could actually print?** Four analytical models are
+   implemented and checked against ANSYS, first on one cell, then on 25.
+2. **What happens when that cell goes under a running foot?** A midsole is filled with the lattice, loaded by
+   a real measured running stance, and searched for the cell that best balances cushioning against energy
+   absorption.
+
+📄 **Read the report:** [Markdown](report/report.md) · [PDF](report/Re-entrant_Auxetics_Report.pdf) · [HTML](report/report.html)
+
+<p align="center">
+  <img src="report/fig/exploded_render.png" width="560" alt="Exploded view of the zoned midsole: pseudo-foot, top plate, 34 lattice slices and bottom plate">
+  <br><sub>The finished midsole, exploded: pseudo-foot (red), top plate, 34 zoned lattice slices, bottom plate.</sub>
+</p>
+
+---
+
+## Part 1 · Four models, one cell
+
+| Model | What it adds | Verdict against ANSYS |
+|---|---|---|
+| **Gibson & Ashby** | Walls bend, nothing else | Close on average, up to ~40 % too stiff for thick walls |
+| **Masters & Evans** | Walls also stretch; optional joint hinges | Consistently about a fifth too soft — but ranks cells correctly |
+| **Malek & Gibson** | Thick walls, rigid joints, shear | **Best: within ±10 % on every cell** |
+| **Ohtaki** | Large rotations (elastica) | Only model with the nonlinear rise, but misses buckling |
+
+The forefoot cell (θ −30°, l 4, h 8, t 1.6 mm) came out at **E₂ = 2.20 MPa** and **ν = −0.14** in ANSYS,
+and buckles at **0.36 MPa**. The big surprise: *every* model over-predicts how auxetic the cell is. Thick,
+printable walls resist the hinge-like rotation that makes the bow-ties fold.
+
+<p align="center">
+  <img src="report/fig/grid_vs_models.png" width="640" alt="Model stiffness and Poisson's ratio plotted against ANSYS for 25 cells">
+  <br><sub>25 cells, four models, one plane-stress ANSYS batch. On the line = perfect agreement.</sub>
+</p>
+
+## Part 2 · The midsole
+
+<p align="center">
+  <img src="report/fig/film_dark.png" width="640" alt="Twelve frames of a running stance with a pseudo-foot pressing into the midsole">
+  <br><sub>One measured stance (213 ms, peak 1523 N), replayed through a three-segment pseudo-foot.</sub>
+</p>
+
+- **The foot:** a heel sphere, midfoot block and toe block, posed frame-by-frame from the
+  [Fukuchi running dataset](https://peerj.com/articles/3298/).
+- **The sole:** 34 lattice slices across the foot, each treated as a beam resting on a bed of lattice columns.
+  The foot sinks until the slices push back with exactly the measured force.
+- **The search:** 24 candidate cells, each run through the whole stance. Softer cells absorb more energy but
+  let the foot sink deeper — roughly **0.6 J extra per extra millimetre of dip**. There is no free lunch, only
+  a trade-off front.
+- **The design:** a stiffer cell under the forefoot, where the load concentrates, and the softest, most
+  auxetic cell for the midfoot and heel.
+
+---
+
+## What's in here
 
 ```
-polished_files/
-├── paths.py              folder locations used by every script
-├── inputs/               things the scripts read (never written to)
-│   ├── midsole_base.step     bulk midsole volume (scaled to 270 mm on read)
-│   ├── pseudo_foot.step      toe block, midfoot block, heel sphere
-│   └── fukuchi/              one subject of the Fukuchi running dataset (3.5 m/s + static)
-├── models/               the cell models
-│   ├── matlab/               G&A, M&E, M&G, Ohtaki (.m) + lattice generator
-│   ├── lattice_law.py        Ohtaki large-deflection curve in Python (cached)
-│   └── model_compare.py      4 models vs ANSYS, comparison figures
-├── midsole/              the application, run in this order
-│   ├── fill_midsole.py       1. fill the midsole with lattice slices -> STL
-│   ├── foot_motion.py        2. Fukuchi stance -> foot angles + force split
-│   ├── foot_anim.py             (view any frame / make the GIF)
-│   ├── foot_conform.py       3. one frame: posed foot on the slices (beam on lattice)
-│   ├── full_stance.py        4. every frame, sink solved from force balance
-│   └── zone_search.py        5. pick a lattice per zone (writes zone_pick.csv)
-├── outputs/              everything the scripts write (CSV, PNG, STL, GIF, cache)
-└── report/               make_figs.py, full_report.html / .pdf, report.html / .pdf, fig/
+reentrant-auxetics/
+├── report/               the report (md / pdf / html) and every figure in it
+├── models/               the four cell models — MATLAB originals + Python ports
+├── midsole/              the midsole pipeline, in run order (see below)
+├── ansys/                hand-run setup sheet, test geometry, results, 25-cell batch
+├── inputs/               midsole + pseudo-foot CAD, Fukuchi running data
+├── outputs/              everything the scripts produce (CSV, PNG, STL, GIF)
+└── paths.py              one place for every folder location
 ```
 
-## Running
+<details>
+<summary><b>Full file map</b></summary>
 
-Run from anywhere; paths resolve from `paths.py`.
+```
+├── models/
+│   ├── matlab/               gibson_ashby.m, masters_evans.m, malek_gibson.m, ohtaki.m, build_lattice.m
+│   ├── lattice_law.py        Ohtaki large-deflection curve (cached)
+│   └── model_compare.py      four models vs ANSYS, comparison figures
+├── midsole/
+│   ├── fill_midsole.py       fill the midsole with lattice slices → STL
+│   ├── foot_motion.py        Fukuchi stance → foot angles + heel/forefoot force split
+│   ├── foot_anim.py          view any frame / make the stance GIF
+│   ├── foot_conform.py       one frame: posed foot on the slices
+│   ├── full_stance.py        every frame, sink solved from force balance
+│   └── zone_search.py        pick a lattice per zone
+├── ansys/
+│   ├── unit_cell_setup.md    how runs A (x₂), B (x₁) and C (large strain) were set up
+│   ├── make_block.py         test-block geometry → DXF / STEP / STL
+│   ├── geometry/             the generated blocks
+│   ├── results/              small-strain values and the run C collapse curve
+│   └── grid_plane/           25-cell APDL batch: inputs, run_all.bat, comparison
+└── report/
+    ├── fig/                  all report figures
+    ├── make_figs.py          regenerates them
+    ├── to_markdown.py        report.html → report.md
+    └── archive/              earlier drafts
+```
+</details>
+
+## Running it
 
 ```bash
-python midsole/foot_motion.py
-python midsole/fill_midsole.py          # ~3 min, opens a 3D preview at the end
-python midsole/foot_conform.py 30 6.7   # row 30, sink 6.7 mm
-python midsole/full_stance.py 1         # every row, ~1 min
-python midsole/zone_search.py           # ~5 min; then re-run fill_midsole.py
-python models/model_compare.py          # picks up ../ansys_stuff/results/*.csv
-python report/make_figs.py              # all report figures, ~4 min
+# the midsole pipeline
+python midsole/foot_motion.py           # running data → foot motion
+python midsole/fill_midsole.py          # build the lattice midsole (~3 min)
+python midsole/full_stance.py 1         # load it through the whole stance (~1 min)
+python midsole/zone_search.py           # choose a cell per zone (~5 min)
+
+# models and report
+python models/model_compare.py          # four models vs ANSYS
+python report/make_figs.py              # regenerate report figures
+python report/to_markdown.py            # refresh report.md
 ```
 
-`fill_midsole.py` uses `outputs/zone_pick.csv` if it exists (one lattice per zone),
-otherwise the single lattice set at the top of the file.
+**ANSYS batch:** `python ansys/grid_plane/make_grid_plane.py` → double-click `ansys/grid_plane/run_all.bat`
+(ANSYS 2025 R1) → `python ansys/grid_plane/compare_grid.py`.
 
-MATLAB scripts are self-contained: open one and press Run (test call at the top).
-
-## Key numbers
-
-- Solid: TPU, Es = 19.3 MPa, nu_s = 0.45 (to be replaced by the measured value).
-- Forefoot cell: theta -30 deg, l 4, h 8, t 1.6 mm. Midfoot/heel cell: l 5, h 10, t 1.0 mm.
-- ANSYS (forefoot cell): E1 3.45, E2 4.35 MPa, nu12 -0.14, nu21 -0.33; buckles at 0.36 MPa.
-
-Python packages: numpy, scipy, pandas, matplotlib, shapely, trimesh, manifold3d, pyvista, Pillow.
+**Requires:** Python 3 with numpy, scipy, pandas, matplotlib, shapely, trimesh, manifold3d, pyvista, Pillow,
+beautifulsoup4. MATLAB is optional (the `.m` models also exist as Python).

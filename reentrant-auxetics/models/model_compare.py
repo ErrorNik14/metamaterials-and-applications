@@ -3,8 +3,8 @@
 For each zone lattice in zone_pick.csv: E1, E2, nu12, nu21 from G&A, M&E, M&G
 (formulas as the .m files) and Ohtaki's first step; plus the x2 compression
 sigma-eps curve (Ohtaki large deflection vs the linear models).
-If ansys_stuff/results/small_strain.csv / x2_compression.csv exist (forefoot
-cell, see ansys_stuff/unit_cell_setup.md), they are added with % errors.
+If ansys/results/small_strain.csv / x2_compression.csv exist (forefoot
+cell, see ansys/unit_cell_setup.md), they are added with % errors.
 
 Run:  python model_compare.py
 """
@@ -44,7 +44,7 @@ def main():
     if ans is not None:
         errors(df)
     else:
-        print("\n(no ANSYS results yet: put CSVs in ansys_stuff/results/)")
+        print("\n(no ANSYS results yet: put CSVs in ansys/results/)")
     df.to_csv(HERE / "model_compare.csv", index=False, float_format="%.4f")
     style()
     moduli_fig(df)
