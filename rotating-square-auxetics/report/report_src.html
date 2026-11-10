@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Rotating-squares Auxetics</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false}]});"></script>
+<style>
+  /* ---------- page + tokens ---------- */
+  @page { size: 210mm 297mm; margin: 0; }
+  :root {
+    --ink: #1b1b1a; --muted: #6b6a66; --paper: #fcfcfb; --dark: #141413;
+    --accent: #c0392b; --warm: #e9e5de; --rule: #d9d8d3;
+    --serif: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #555; }
+  body { font-family: var(--serif); color: var(--ink); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page { width: 210mm; height: 297mm; position: relative; overflow: hidden; background: var(--paper);
+          page-break-after: always; break-after: page; padding: 22mm 22mm 20mm 22mm; }
+  .dark { background: var(--dark); color: #eceae4; }
+  .beige { background: #f4efe8; }
+  img { display: block; max-width: 100%; }
+
+  .rh { position: absolute; top: 10mm; left: 22mm; right: 22mm; display: flex; justify-content: space-between;
+        font-family: var(--sans); font-size: 6.5pt; letter-spacing: 1.5pt; color: var(--muted); text-transform: uppercase;
+        border-bottom: .2mm solid var(--rule); padding-bottom: 1.5mm; }
+  .dark .rh { border-color: #33322f; color: #8f8c84; }
+  .folio { position: absolute; bottom: 10mm; right: 22mm; font-family: var(--sans); font-size: 7pt; color: var(--muted); }
+
+  /* ---------- type ---------- */
+  h1 { font-weight: 300; font-size: 19pt; letter-spacing: 2pt; text-transform: uppercase; line-height: 1.15; }
+  h2 { font-weight: 500; font-size: 12pt; margin: 5mm 0 2mm; }
+  h2 .no { color: var(--accent); margin-right: 2.5mm; }
+  h3 { font-weight: 500; font-style: italic; font-size: 10pt; margin: 3.5mm 0 1.2mm; }
+  p { font-size: 9.2pt; line-height: 1.5; margin-bottom: 2.4mm; text-align: justify; hyphens: auto; }
+  .lead { font-size: 10.5pt; font-style: italic; color: var(--muted); line-height: 1.45; }
+  .eq { margin: 1mm 0; }
+  .katex { font-size: 1.04em; }
+  .katex-display .katex { font-size: 1.1em; }
+  .eq { font-size: 9.2pt; }
+  .katex-display { margin: 2mm 0; }
+  ul.l { margin: 0 0 2.6mm 5mm; font-size: 9.2pt; line-height: 1.5; }
+  sub, sup { font-size: 70%; }
+  .q { border-left: .6mm solid var(--accent); padding: 1mm 0 1mm 4mm; margin: 3mm 0; font-style: italic; font-size: 10.2pt; }
+
+  /* ---------- figures ---------- */
+  figure { margin: 3.5mm 0; break-inside: avoid; }
+  figcaption { font-family: var(--sans); font-size: 7pt; color: var(--muted); line-height: 1.45; margin-top: 1.8mm; }
+  figcaption b { color: var(--accent); font-weight: 500; margin-right: 2mm; }
+  .dark figcaption { color: #8f8c84; }
+  .ph { border: .35mm dashed #b9b6ae; background: repeating-linear-gradient(45deg, #f4f2ee, #f4f2ee 3mm, #efece6 3mm, #efece6 6mm);
+        display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+        font-family: var(--sans); font-size: 7.5pt; color: var(--muted); padding: 4mm; }
+  .ph::before { content: "PLACEHOLDER\A"; white-space: pre; font-weight: 500; color: var(--accent); letter-spacing: 1.5pt; }
+  .row { display: flex; gap: 5mm; align-items: flex-start; }
+  .row > * { flex: 1; min-width: 0; }
+
+  /* ---------- tables ---------- */
+  table.t { border-collapse: collapse; width: 100%; font-family: var(--sans); font-size: 8pt; margin: 2.5mm 0 3mm; }
+  table.t th, table.t td { padding: 1.4mm 2mm; text-align: right; border-bottom: .2mm solid var(--rule); }
+  table.t th { font-weight: 500; color: var(--muted); border-bottom: .3mm solid var(--ink); }
+  table.t td:first-child, table.t th:first-child { text-align: left; font-family: var(--serif); font-size: 8.5pt; }
+  table.t tr.hi td { color: var(--accent); }
+  table.t.left td, table.t.left th { text-align: left; }
+
+  /* ---------- part / chapter openers ---------- */
+  .part { margin: -22mm -22mm 7mm -22mm; padding: 28mm 22mm 10mm; background: var(--dark); color: #eceae4; }
+  .part .lbl { font-family: var(--sans); font-size: 7pt; letter-spacing: 2pt; color: #8f8c84; }
+  .part .numeral { font-size: 44pt; font-weight: 200; line-height: 1; margin-top: 2mm; }
+  .part .lead { color: #a9a69e; margin-top: 2.5mm; }
+
+  /* ---------- cover / contents ---------- */
+  .frame { position: absolute; inset: 18mm 18mm; border: .25mm solid #c9c7c1; }
+  .bleed { position: absolute; opacity: .45; }
+  .ct { position: absolute; top: 45%; left: 0; right: 0; text-align: center; }
+  .ct h1 { font-size: 22pt; letter-spacing: 5pt; font-weight: 300; }
+  .ct .sub { font-size: 9pt; letter-spacing: 3pt; text-transform: uppercase; margin-top: 3mm; }
+  .toc { font-size: 10pt; line-height: 2.05; margin-top: 4mm; }
+  .toc div { display: flex; }
+  .toc .n { width: 12mm; color: var(--accent); }
+  .toc .d { flex: 1; border-bottom: .2mm dotted #b9b6ae; margin: 0 2mm 2.1mm; }
+  .toc .sub { padding-left: 12mm; font-size: 9pt; color: var(--muted); }
+  .note { font-family: var(--sans); font-size: 7.5pt; color: var(--muted); line-height: 1.5; }
+  .refs p { font-size: 8.3pt; line-height: 1.4; text-align: left; padding-left: 7mm; text-indent: -7mm; margin-bottom: 1.7mm; }
+  .todo { color: var(--accent); font-style: italic; }
+</style>
+</head>
+<body>
+
+<!-- =================================================================== COVER -->
+<section class="page">
+  <img class="bleed" src="fig/cover_closed.png" style="top:-22mm; left:-34mm; width:150mm; transform:rotate(-9deg);">
+  <img class="bleed" src="fig/cover_open.png" style="bottom:-24mm; right:-36mm; width:160mm; transform:rotate(-5deg);">
+  <div class="frame"></div>
+  <div class="ct">
+    <h1>Rotating-squares Auxetics</h1>
+    <div class="sub">Analytical models, a beam FE check and an application</div>
+    <div class="note" style="margin-top:9mm; letter-spacing:2pt;">MOS PROJECT 2026–27 &nbsp;·&nbsp; ROTATING-SQUARES STRAND</div>
+  </div>
+</section>
+
+<!-- =================================================================== CONTENTS -->
+<section class="page">
+  <div class="rh"><span>Rotating-squares auxetics</span><span>Contents</span></div>
+  <h1 style="font-size:18pt; margin-top:4mm;">Contents</h1>
+  <div class="toc">
+    <div><span class="n">1</span>Rotating-squares auxetics<span class="d"></span>3</div>
+    <div class="sub">1.1 &nbsp;Developments in rotating-squares auxetics<span class="d"></span>3</div>
+    <div class="sub">1.2 &nbsp;The models, from rigid squares to a beam finite-element model<span class="d"></span>4</div>
+    <div class="sub">1.3 &nbsp;Setup for the analytical models<span class="d"></span>7</div>
+    <div class="sub">1.4 &nbsp;Setup of the ANSYS simulation<span class="d"></span>8</div>
+    <div class="sub">1.5 &nbsp;Comparison, justifications and observations<span class="d"></span>10</div>
+    <div style="margin-top:3mm;"><span class="n">2</span>Application<span class="d"></span>14</div>
+    <div class="sub">2.1 &nbsp;Literature survey<span class="d"></span>14</div>
+    <div class="sub">2.2 &nbsp;How rotating squares help<span class="d"></span>14</div>
+    <div class="sub">2.3 &nbsp;The question<span class="d"></span>14</div>
+    <div class="sub">2.4 &nbsp;Setup and design choices<span class="d"></span>14</div>
+    <div class="sub">2.5 &nbsp;Grid search and findings<span class="d"></span>14</div>
+    <div class="sub">2.6 &nbsp;Limitations and expansions<span class="d"></span>14</div>
+    <div style="margin-top:3mm;"><span class="n">—</span>References<span class="d"></span>15</div>
+  </div>
+  <h2 style="margin-top:10mm;">Summary</h2>
+  <p>A lattice of square tiles joined at their corners by short ligaments expands in every direction when pulled in one.
+    Three descriptions of this rotating-squares lattice are developed for a printable PLA design (a = 10 mm, ligaments
+    1.0 × 0.8 mm, printed at θ<sub>0</sub> = 15°): rigid squares on ideal pins, which give ν = −1 exactly; beam-like ligaments
+    treated by an energy method, which give ν = −0.9915 and an effective modulus of 23.7 MPa; and a beam finite-element model
+    written for this work, which reproduces the energy method to 10<sup>−5</sup> for the infinite lattice and shows a 0.1 %
+    edge effect in a 5 × 5 part.</p>
+  <p>A failure analysis then shows that the ligaments, not the kinematic locks or buckling, limit the part: they yield at
+    about ±0.9 % lattice strain, giving a safe operating range of −0.56 % to +0.55 % with a safety factor of 1.5. The ANSYS
+    comparison and Part 2, the application, are still to be completed.</p>
+  <p class="note" style="margin-top:6mm;">Dashed boxes marked PLACEHOLDER are reserved for ANSYS results, screenshots and photographs
+    still to be added. Text in red italics marks items to check.</p>
+  <div class="folio">2</div>
+</section>
+
+<!-- =================================================================== PART 1 -->
+<section class="page">
+  <div class="part">
+    <div class="lbl">PART ONE</div>
+    <div class="numeral">1</div>
+    <h1 style="margin-top:3mm;">Rotating-squares auxetics</h1>
+    <div class="lead">From rigid squares to compliant hinges, checked by an independent beam model</div>
+  </div>
+  <h2><span class="no">1.1</span>Developments in rotating-squares auxetics</h2>
+  <p>Materials with a negative Poisson's ratio widen when stretched. After Lakes made the first deliberately auxetic foam
+    [1] and Evans and co-workers named the class [2], the search turned to mechanisms simple enough to analyse exactly.
+    Grima and Evans proposed the most compact one: rigid squares connected at their corners, which counter-rotate under load
+    and open the gaps between them [3]. Because all squares turn by the same angle, the expansion is the same in every
+    direction and the Poisson's ratio is exactly −1. The idea was soon generalised to rectangles, triangles and other rigid
+    units, and used to explain auxetic behaviour in crystals and zeolites [4].</p>
+  <p>Experiment and manufacturing then caught up. Bertoldi and co-workers showed that a rubber sheet with a square array of
+    circular holes buckles into the rotating-squares pattern under compression [5]; cut patterns in flat sheets realise the
+    same mechanism directly [6], and rotating units with bistable hinges hold their deployed shape [7]. Recent work has turned
+    to what happens away from the ideal: a characteristic length that makes small samples behave differently from large ones
+    [8], and a description of the soft, non-uniform deformations the mechanism allows [9]. Both bear on the finite, printed
+    part studied here. A broader review of auxetic structures and their uses is given in [10].</p>
+  <figure><img src="fig/timeline.png" style="width:100%;">
+    <figcaption><b>Fig. 1</b>A short timeline (not to scale). Red: the rotating-squares model this report starts from [3], and
+      the recent work on finite-size effects that explains part of Section 1.5 [9].
+      <span class="todo">Check dates against sources.</span></figcaption></figure>
+  <div class="folio">3</div>
+</section>
+
+<section class="page">
+  <div class="rh"><span>1 · Rotating-squares auxetics</span><span>Models</span></div>
+  <h2 style="margin-top:0;"><span class="no">1.2</span>The models, from rigid squares to a beam finite-element model</h2>
+  <p>All models describe the same lattice. Squares of side a are arranged in a checkerboard: type A squares are rotated by −θ,
+    type B by +θ. Each corner is joined to exactly one neighbour, so every square has four hinges. At θ = 0 the squares touch
+    edge to edge; at θ = 45° they meet corner to corner. The printed part is made at θ<sub>0</sub> = 15°, with ligaments of
+    length L<sub>h</sub> and width w bridging the corners and an out-of-plane thickness t. The models differ in what a hinge is
+    allowed to do, and the progression is one of adding mechanisms.</p>
+  <figure><img src="fig/geometry.png" style="width:100%;">
+    <figcaption><b>Fig. 2</b>The ideal lattice at four rotation angles, 4 × 4 squares at the same scale. The pitch, the distance
+      between neighbouring square centres, grows from a to a√2, and the open area from 0 to 50 %.</figcaption></figure>
+  <h3>Rigid squares on ideal pins</h3>
+  <p>In the original model [3] the squares are rigid and the hinges are frictionless points. Requiring that the hinge between
+    two neighbours is reached from both centres (Fig. 3) gives the pitch, identical in x and in y:</p>
+  <div class="eq">\[ p(\theta) = a\,(\cos\theta + \sin\theta) \tag{1} \]</div>
+  <p>Strains are measured from the as-printed state, \(\varepsilon = p/p_0 - 1\). Since the pitch is the same function in both
+    directions, every increment of rotation stretches both equally:</p>
+  <div class="eq">\[ \nu_{xy} = -\frac{d\varepsilon_y}{d\varepsilon_x} = -\frac{dp_y/d\theta}{dp_x/d\theta} = -1,
+     \qquad \frac{dp}{d\theta} = a(\cos\theta - \sin\theta) = 0 \;\text{ at }\; \theta = 45^\circ \tag{2} \]</div>
+  <p>The result holds for any size, any material and any strain, not only small ones. The second relation marks the open lock:
+    at 45° the pitch is at its maximum and the lattice can stretch no further. The model is a mechanism with one degree of
+    freedom, so it predicts shape but no stiffness.</p>
+  <div class="folio">4</div>
+</section>
+
+<section class="page beige">
+  <div class="rh"><span>1 · Rotating-squares auxetics</span><span>Models</span></div>
+  <figure style="margin-top:4mm;"><img src="fig/loop.png" style="width:100%;">
+    <figcaption><b>Fig. 3</b>Vector loop closure through one hinge. The hinge is the top-right corner of A and the top-left
+      corner of B; writing both positions from the square centres and equating them gives Eq. (1). The vertical components
+      cancel, so B stays level with A. Dashed outlines show the closed state, θ = 0.</figcaption></figure>
+  <p>The derivation in Fig. 3 is the backbone of every model in this report. With rotation matrix R and the corner vectors
+    \(\mathbf r_A = R(-\theta)\tfrac a2(1,1)\) and \(\mathbf r_B = R(\theta)\tfrac a2(-1,1)\), the centre of B follows from
+    \(\mathbf c_B = \mathbf c_A + \mathbf r_A - \mathbf r_B\). The x-components add to a(cos θ + sin θ); the y-components are
+    equal and cancel. Repeating the construction for the square above A uses the top-left and bottom-left corners and gives the
+    same pitch upward, which is where the isotropy, and so ν = −1, comes from.</p>
+  <p>The same loop, linearised about θ<sub>0</sub>, is used again in the compliant model: if a hinge is not a perfect pin,
+    the two corners need not meet, and the mismatch between them is what stretches or bends the ligament. The construction
+    also fixes the hinge topology used in the finite-element model. Each corner of a type A square is pinned to its right,
+    top, left and bottom neighbour in turn (a "pinwheel"), and type B squares use the mirror image. Choosing the opposite
+    corners would make the lattice close rather than open as θ increases.</p>
+  <div class="folio">5</div>
+</section>
+
+<section class="page">
+  <div class="rh"><span>1 · Rotating-squares auxetics</span><span>Models</span></div>
+  <h3 style="margin-top:0;">Compliant hinges — an energy method</h3>
+  <p>A printed hinge is a short ligament clamped into both squares. When the squares turn by ∓Δθ about the ligament's
+    mid-point, its ends rotate oppositely with no relative sideways motion, so the ligament is in pure bending at constant
+    moment. It also stretches if the squares move apart without rotating. Each ligament is therefore a pair of springs,
+    \(k_r = EI/L_h\) for relative rotation and \(k_a = EA/L_h\) for stretching, with \(I = tw^3/12\) and \(A = tw\). Linearising
+    the loop of Fig. 3, the stretch of a horizontal and a vertical ligament is</p>
+  <div class="eq">\[ \delta_h = p_0\,\varepsilon_x - b\,\Delta\theta, \qquad \delta_v = p_0\,\varepsilon_y - b\,\Delta\theta,
+     \qquad b = a(\cos\theta_0 - \sin\theta_0) \tag{3} \]</div>
+  <p>where b, the lever arm, converts square rotation into hinge opening. A 2 × 2 repeating cell holds four horizontal and
+    four vertical ligaments, so its strain energy is</p>
+  <div class="eq">\[ U = 2k_a\,\delta_h^2 + 2k_a\,\delta_v^2 + 16\,k_r\,\Delta\theta^2 \tag{4} \]</div>
+  <p>Minimising U over the internal rotation Δθ, then comparing with the energy density of an isotropic sheet, gives the
+    effective properties. Rotation and stretching act as springs in series, and their balance is set by a single number ρ:</p>
+  <div class="eq">\[ \nu = -\frac{1}{1 + 8\rho}, \qquad E_{\mathrm{eff}} = \frac{8\,k_r}{t\,b^2\,(1 + 8\rho)},
+     \qquad \rho = \frac{k_r}{k_a b^2} = \frac{w^2}{12\,b^2} \tag{5} \]</div>
+  <p>Thin ligaments (ρ → 0) recover ν = −1; thick ones let stretching take part, which on its own gives ν = 0. Stiffness comes
+    almost entirely from bending, \(E_{\mathrm{eff}} \propto E\,w^3/(L_h a^2)\), and is independent of t.</p>
+  <h3>Large rotation</h3>
+  <p>With ligament arms of length L<sub>h</sub> rotating with the squares, the pitch and the nominal stress along the
+    mechanism path (no stretching) become</p>
+  <div class="eq">\[ p(\theta) = a(\cos\theta + \sin\theta) + L_h\cos(\theta - \theta_0), \qquad
+     \sigma_x = \frac{8\,k_r\,(\theta - \theta_0)}{p_0\, t\; p'(\theta)} \tag{6} \]</div>
+  <p>The stress grows without bound as p′ → 0, which moves the open lock from 45° to 43.1° for this design.</p>
+  <h3>Hinge stress and failure</h3>
+  <p>The peak ligament stress combines bending at constant moment with the axial force that equilibrium of a vertical cut
+    requires, \(N = \sigma_x p_0 t\):</p>
+  <div class="eq">\[ \sigma_{\max} = K_t\left(\frac{E\,w\,|\theta - \theta_0|}{L_h} + \frac{|\sigma_x|\,p_0}{w}\right) \tag{7} \]</div>
+  <h3>A beam finite-element model</h3>
+  <p>As an independent check, the lattice is also modelled with two-node Euler–Bernoulli frame elements (three degrees of
+    freedom per node), written from scratch. Each square is a stiff star of four beams from its centre to its corners;
+    each ligament is four PLA beam elements welded to the corner nodes. The element stiffness is the usual bar-plus-beam
+    matrix rotated into global axes, \(k_g = T^{\mathsf T} k_l\, T\) [11]. For stability, a geometric stiffness K<sub>G</sub> is
+    built from the element axial forces of a pre-loaded state, and the critical load factor follows from [11, 12]</p>
+  <div class="eq">\[ \left(K + \lambda\,K_G\right)\boldsymbol\phi = \mathbf 0 \tag{8} \]</div>
+  <p>Two versions are used: a periodic 2 × 2 cell, in which the right edge wraps onto the left and the average strains are
+    extra unknowns, representing the infinite lattice of Eqs. (3)–(5); and finite N × N arrays with free edges, representing
+    the printed part. No equation from the analytical models enters the finite-element code.</p>
+  <div class="folio">6</div>
+</section>
+
+<section class="page">
+  <div class="rh"><span>1 · Rotating-squares auxetics</span><span>Models</span></div>
+  <table class="t left" style="margin-top:0;">
+    <tr><th>Model</th><th>Rotation</th><th>Hinge bending</th><th>Ligament stretching</th><th>Large rotation</th><th>Free edges</th><th>Yield, contact, buckling</th></tr>
+    <tr><td>Rigid squares, pins [3]</td><td>✓</td><td></td><td></td><td>✓</td><td></td><td>locks only</td></tr>
+    <tr><td>Energy method, Eq. (5)</td><td>✓</td><td>✓</td><td>✓</td><td></td><td></td><td></td></tr>
+    <tr><td>Large-rotation path, Eq. (6)</td><td>✓</td><td>✓</td><td></td><td>✓</td><td></td><td>✓ (Eq. 7)</td></tr>
+    <tr><td>Beam FE, periodic cell</td><td>✓</td><td>✓</td><td>✓</td><td></td><td></td><td></td></tr>
+    <tr><td>Beam FE, finite array</td><td>✓</td><td>✓</td><td>✓</td><td></td><td>✓</td><td>buckling, Eq. (8)</td></tr>
+  </table>
+  <p class="note">Table 1. Mechanisms kept by each model. None includes deformation of the squares themselves or the
+    flexibility of the ligament root, which a solid ANSYS model does.</p>
+
+  <h2><span class="no">1.3</span>Setup for the analytical models</h2>
+  <p>All models are implemented in base MATLAB as short functions driven by a single parameter file, so every number in this
+    report follows from one set of inputs. Each stage ends with checkpoint tests that compare two independent routes to the
+    same quantity; all pass. The design is the printable part:</p>
+  <table class="t">
+    <tr><th>Parameter</th><th>a (mm)</th><th>L<sub>h</sub> (mm)</th><th>w (mm)</th><th>t (mm)</th><th>θ<sub>0</sub></th><th>p<sub>0</sub> (mm)</th><th>Array</th></tr>
+    <tr><td>Printed design</td><td>10</td><td>1.0</td><td>0.8</td><td>5</td><td>15°</td><td>13.25</td><td>5 × 5</td></tr>
+  </table>
+  <p>The material is PLA with E = 3.5 GPa, σ<sub>y</sub> = 50 MPa and ν<sub>s</sub> = 0.36, treated as linear-elastic up to
+    yield. Every stiffness scales with E and every strain limit with σ<sub>y</sub>/E, so measured values for the printed
+    filament can be substituted directly. The lattice is analysed in plane stress; the 5 mm thickness makes the ligaments
+    (t/w)<sup>2</sup> ≈ 39 times stiffer out of plane than in plane.</p>
+  <figure><img src="fig/kinematics.png" style="width:100%;">
+    <figcaption><b>Fig. 4</b>Left: strain against square rotation, measured from the as-printed state. Solid: ideal pins,
+      Eq. (1); dashed: with ligament arms, Eq. (6). Right: porosity of the ideal lattice.</figcaption></figure>
+  <p>The kinematics of Fig. 4 bound the useful range of the mechanism. From θ<sub>0</sub> = 15° the ideal lattice can stretch
+    by \(2/\sqrt3 - 1 = 15.5\,\%\) before the open lock and compress by \(\sqrt{2/3} - 1 = -18.4\,\%\) before the squares
+    close. Ligament arms reduce the tensile range to 13.4 %; in compression the squares first touch at θ = −2.7°, a strain of
+    −21 %, found by a separating-axis overlap test on each square and its eight neighbours.</p>
+  <div class="folio">7</div>
+</section>
+
+<section class="page">
+  <div class="rh"><span>1 · Rotating-squares auxetics</span><span>Model and simulation setup</span></div>
+  <h3 style="margin-top:0;">Setting up the finite-element model</h3>
+  <p>The finite array is gripped like a tensile specimen: the centres of the left column are held in x, those of the right
+    column are displaced by ε(N − 1)p<sub>0</sub>, and a single centre is held in y. Everything else is free, so the edge
+    squares may rotate and the lattice may expand sideways. Strains are measured by a least-squares fit to the centres of the
+    interior squares, and the effective modulus from the grip force. Results do not change with the stiffness of the square
+    stars between 10<sup>2</sup> and 10<sup>7</sup> times PLA, or with 1 to 8 elements per ligament.</p>
+  <figure><img src="fig/fe.png" style="width:96%; margin:auto;">
+    <figcaption><b>Fig. 5</b>The 5 × 5 beam model. Left: mesh, 245 nodes and 260 elements. Right: deformed at +1 % strain,
+      displacements magnified five times; the array widens as it lengthens.</figcaption></figure>
+  <h2><span class="no">1.4</span>Setup of the ANSYS simulation</h2>
+  <p>The ANSYS model is intended to test what the beam models leave out: the solid ligament root, stress concentration at
+    the re-entrant corners, deformation of the squares, and out-of-plane behaviour. To make the comparison like for like, it
+    uses the printed 5 × 5 geometry exported from MATLAB as a closed outline and the same grips as the beam model: edge square
+    centres displaced in x, free in y and in rotation. The runs below are planned; results will be entered in Table 3.</p>
+  <table class="t left">
+    <tr><th>Run</th><th>Load</th><th>Model</th><th>Extracted</th></tr>
+    <tr><td>A</td><td>x tension, 1 %</td><td>2D plane stress, linear elastic</td><td>E<sub>eff</sub>, ν from interior centres</td></tr>
+    <tr><td>B</td><td>x compression, 1 %</td><td>2D plane stress, linear elastic</td><td>E<sub>eff</sub>, ν; check against A</td></tr>
+    <tr><td>C</td><td>x tension to the open lock</td><td>2D, large deflection</td><td>stress–strain curve, peak ligament stress</td></tr>
+    <tr><td>D</td><td>compression pre-load</td><td>3D solid, eigenvalue buckling</td><td>first in-plane and out-of-plane modes</td></tr>
+  </table>
+  <p class="note">Table 2. Planned ANSYS runs. <span class="todo">Fill in mesh size, element type and solver settings.</span></p>
+  <div class="folio">8</div>
+</section>
+
+<section class="page">
+  <div class="rh"><span>1 · Rotating-squares auxetics</span><span>Simulation setup</span></div>
+  <div class="row">
+    <figure style="margin-top:0;"><div class="ph" style="height:78mm;">ANSYS geometry and boundary<br>conditions, 5 × 5 part</div>
+      <figcaption><b>Fig. 6a</b>Model and grips.</figcaption></figure>
+    <figure style="margin-top:0;"><div class="ph" style="height:78mm;">Mesh close-up at one ligament<br>(elements across w)</div>
+      <figcaption><b>Fig. 6b</b>Mesh at a hinge.</figcaption></figure>
+  </div>
+  <p>Two quantities from ANSYS feed back into the analytical models. The measured stiffness calibrates an effective ligament
+    length, L<sub>h</sub> + c·w, which absorbs the root flexibility that a clamped beam ignores; a script that overlays the
+    ANSYS points on the MATLAB curves solves for c directly. The peak stress at the ligament root, divided by the nominal
+    stress of Eq. (7), gives the stress-concentration factor K<sub>t</sub>, which is set to 1 until then.</p>
+  <figure><div class="ph" style="height:78mm;">Run C — von Mises stress at the ligaments near the open lock</div>
+    <figcaption><b>Fig. 6c</b>Stress concentration at the hinges.</figcaption></figure>
+  <div class="folio">9</div>
+</section>
+
+<section class="page">
+  <div class="rh"><span>1 · Rotating-squares auxetics</span><span>Comparison</span></div>
+  <h2 style="margin-top:0;"><span class="no">1.5</span>Comparison, justifications and observations</h2>
+  <h3>Small strain</h3>
+  <table class="t">
+    <tr><th>Printed design</th><th>ν</th><th>vs ANSYS</th><th>vs FE periodic</th><th>E<sub>eff</sub> (MPa)</th><th>vs ANSYS</th><th>vs FE periodic</th></tr>
+    <tr class="hi"><td>ANSYS (run A)</td><td>—</td><td></td><td></td><td>—</td><td></td><td></td></tr>
+    <tr><td>Rigid squares, pins</td><td>−1</td><td>—</td><td>−0.85 %</td><td>0 (mechanism)</td><td>—</td><td>—</td></tr>
+    <tr><td>Energy method</td><td>−0.9915</td><td>—</td><td>0.00 %</td><td>23.69</td><td>—</td><td>0.00 %</td></tr>
+    <tr><td>Beam FE, periodic cell</td><td>−0.9915</td><td>—</td><td>ref.</td><td>23.69</td><td>—</td><td>ref.</td></tr>
+    <tr><td>Beam FE, 5 × 5 array</td><td>−0.9904</td><td>—</td><td>+0.12 %</td><td>23.68</td><td>—</td><td>−0.04 %</td></tr>
+    <tr><td>Beam FE, 13 × 13 array</td><td>−0.9900</td><td>—</td><td>+0.15 %</td><td>23.68</td><td>—</td><td>−0.03 %</td></tr>
+  </table>
+  <p class="note">Table 3. Small-strain properties. Percentages: difference in ν (sign: towards zero is positive) and in
+    E<sub>eff</sub>. <span class="todo">ANSYS row and columns to be filled from run A.</span></p>
+  <p><b>The three beam-level models agree.</b> The energy method and the periodic finite-element cell differ by about
+    10<sup>−5</sup> in both properties, although they share no equations; tension and compression give identical results
+    because both are linear. The finite arrays are slightly less auxetic and slightly softer, for two reasons:</p>
+  <ul class="l">
+    <li><i>Free edges.</i> Edge squares have fewer ligaments. The soft rotation mechanism lets this disturbance reach far into
+      the array, so the 5 × 5 and 13 × 13 arrays both sit about 0.1 % away from the infinite lattice, and the gap closes only
+      slowly with size, consistent with the long-range behaviour described in [8, 9].</li>
+    <li><i>Ligament stretching.</i> At w = 0.8 mm only ρ = 1.1 × 10<sup>−3</sup> of the deformation is stretching, so
+      ν stays within 1 % of −1. Thicker ligaments raise ρ and ν rises towards zero, as Fig. 7 shows.</li>
+  </ul>
+  <figure><img src="fig/nu_width.png" style="width:74%; margin:auto;">
+    <figcaption style="text-align:center;"><b>Fig. 7</b>Poisson's ratio against ligament width. Lines: energy method for three
+      square sizes; diamonds: periodic FE cell; dots: 5 × 5 FE array (a = 10 mm). Points in red will mark ANSYS.</figcaption></figure>
+  <p>The beam models predict a deviation from −1 that is small for any printable ligament. A solid model is expected to show
+    more: a short, stubby ligament (L<sub>h</sub>/w = 1.25) rotates partly inside the squares, which makes it softer and lets
+    the squares themselves deform.</p>
+  <div class="folio">10</div>
+</section>
+
+<section class="page">
+  <div class="rh"><span>1 · Rotating-squares auxetics</span><span>Comparison</span></div>
+  <h3 style="margin-top:0;">Stiffness and its sensitivity</h3>
+  <figure style="margin-top:1mm;"><img src="fig/sweeps.png" style="width:100%;">
+    <figcaption><b>Fig. 8</b>Effective modulus against ligament width, ligament length and square side, one parameter varied
+      at a time; dots mark the printed design.</figcaption></figure>
+  <p>The lattice is about 150 times softer than solid PLA. Its modulus scales roughly with w<sup>3</sup>, so the printer's
+    resolution in the ligament controls the stiffness more than any other dimension: a 0.1 mm error in w changes
+    E<sub>eff</sub> by about 40 %. This, rather than the model, is likely to dominate the scatter between printed samples.</p>
+  <h3>Strength, locking and stability</h3>
+  <figure><img src="fig/stress.png" style="width:100%;">
+    <figcaption><b>Fig. 9</b>Left: nominal stress along the mechanism path, Eq. (6), against the linear modulus. Right: peak
+      ligament stress, Eq. (7), against applied strain, with yield and yield divided by the safety factor.</figcaption></figure>
+  <p>Ninety-three per cent of the ligament stress comes from bending. Because all of the rotation is concentrated in a short
+    ligament, its outer fibre reaches the yield strain of PLA, σ<sub>y</sub>/E = 1.4 %, when the lattice as a whole has
+    strained by only 0.87 % in tension and 0.90 % in compression. The beam model confirms the stress at the centre of a large
+    array to within 0.3 %; near the free edges of the 5 × 5 part the worst ligament carries 6.5 % more, and the safe range is
+    reduced by that factor.</p>
+  <div class="folio">11</div>
+</section>
+
+<section class="page dark">
+  <div class="rh"><span>1 · Rotating-squares auxetics</span><span>Comparison</span></div>
+  <figure style="margin-top:2mm;"><img src="fig/film_dark.png" style="width:100%;">
+    <figcaption><b>Fig. 10</b>Ten states of the 5 × 5 part from fully closed to just short of the open lock, from the
+      large-rotation kinematics. Ligament colour shows the elastic stress estimate: green within the safe range, red beyond
+      yield. Dashed: the as-printed outline.</figcaption></figure>
+  <p style="color:#d8d5ce;">Only the as-printed frame is green. Every visibly deformed state lies beyond the yield of the
+    ligaments, which is the central practical finding of Part 1: the large, symmetric expansion that makes the rotating-squares
+    lattice attractive is reached in PLA only through plastic hinges. A printed part will still expand auxetically under a
+    hand load, but it will not return fully to its printed shape and will crack after a small number of cycles.</p>
+  <p style="color:#d8d5ce;">The geometric limits lie far beyond yield. The open lock (+13.4 %) and the square contact (−21 %)
+    are fifteen and twenty-three times the yield strain. The linear buckling analysis of Eq. (8) on the finite array finds no
+    in-plane bifurcation anywhere near the working range (its first load factor corresponds to a strain far outside what a
+    linear analysis can describe), which is expected: the lattice is printed already rotated, so compression continues the
+    mechanism smoothly rather than switching to a new pattern. A single ligament carries about 14 N at yield against an Euler
+    load of over 7 kN [12], and at L<sub>h</sub>/w = 1.25 it is too short to buckle at all.</p>
+  <div class="folio" style="color:#8f8c84;">12</div>
+</section>
+
+<section class="page">
+  <div class="rh"><span>1 · Rotating-squares auxetics</span><span>Comparison</span></div>
+  <figure style="margin-top:0;"><img src="fig/limits.png" style="width:92%; margin:auto;">
+    <figcaption style="text-align:center;"><b>Fig. 11</b>Every limit of the printed part on one logarithmic axis. Safe range:
+      yield with a safety factor of 1.5 and the 5 × 5 edge factor of 1.065.</figcaption></figure>
+  <p><b>Observations.</b></p>
+  <ul class="l">
+    <li>For a printable PLA design, rigid squares, the energy method and the beam finite-element model agree on ν to within
+      1 % and on each other's stiffness to 10<sup>−5</sup>; the rigid-square model remains a good description of the
+      <i>shape</i> change, but says nothing about stiffness.</li>
+    <li>Ligament width controls stiffness (∝ w<sup>3</sup>) and, through ρ, the departure from ν = −1; ligament length controls
+      stiffness but leaves ν unchanged in these models.</li>
+    <li>Yield of the ligaments, not locking or buckling, limits the printed part. The safe operating strain is
+      <b>−0.56 % to +0.55 %</b>.</li>
+    <li>The elastic range grows with longer, thinner ligaments: at w = 0.8 mm, lengthening L<sub>h</sub> from 1 to 3 mm widens
+      it about 2.6 times. A more compliant filament such as TPU or PETG would extend it further.</li>
+    <li>Out-of-plane buckling, root flexibility and K<sub>t</sub> are not captured by any beam model and are left to ANSYS
+      runs C and D.</li>
+  </ul>
+  <div class="row">
+    <figure><div class="ph" style="height:52mm;">Photograph: printed 5 × 5 part,<br>as printed and stretched by hand</div>
+      <figcaption><b>Fig. 12a</b>Printed part.</figcaption></figure>
+    <figure><div class="ph" style="height:52mm;"><span>Measured ε<sub>y</sub> against ε<sub>x</sub> from marked<br>square centres (red), with ν = −0.99</span></div>
+      <figcaption><b>Fig. 12b</b>Experimental Poisson's ratio.</figcaption></figure>
+  </div>
+  <div class="folio">13</div>
+</section>
+
+<!-- =================================================================== PART 2 -->
+<section class="page">
+  <div class="part">
+    <div class="lbl">PART TWO</div>
+    <div class="numeral">2</div>
+    <h1 style="margin-top:3mm;">Application</h1>
+    <div class="lead">To be written</div>
+  </div>
+  <h2><span class="no">2.1</span>Literature survey</h2>
+  <div class="ph" style="height:14mm;">Section to be written</div>
+  <h2><span class="no">2.2</span>How rotating squares help</h2>
+  <div class="ph" style="height:14mm;">Section to be written</div>
+  <h2><span class="no">2.3</span>The question</h2>
+  <div class="ph" style="height:14mm;">Section to be written</div>
+  <h2><span class="no">2.4</span>Setup and design choices</h2>
+  <div class="ph" style="height:14mm;">Section to be written</div>
+  <h2><span class="no">2.5</span>Grid search and findings</h2>
+  <div class="ph" style="height:14mm;">Section to be written</div>
+  <h2><span class="no">2.6</span>Limitations and expansions</h2>
+  <div class="ph" style="height:14mm;">Section to be written</div>
+  <div class="folio">14</div>
+</section>
+
+<!-- =================================================================== REFERENCES -->
+<section class="page refs">
+  <div class="rh"><span>Rotating-squares auxetics</span><span>References</span></div>
+  <h1 style="font-size:18pt; margin:4mm 0 6mm;">References</h1>
+  <p>[1] Lakes, R. (1987). Foam structures with a negative Poisson's ratio. <i>Science</i>, 235, 1038–1040.</p>
+  <p>[2] Evans, K. E., Nkansah, M. A., Hutchinson, I. J., &amp; Rogers, S. C. (1991). Molecular network design. <i>Nature</i>, 353, 124.</p>
+  <p>[3] Grima, J. N., &amp; Evans, K. E. (2000). Auxetic behavior from rotating squares. <i>Journal of Materials Science Letters</i>, 19, 1563–1565.</p>
+  <p>[4] Grima, J. N., Alderson, A., &amp; Evans, K. E. (2005). Auxetic behaviour from rotating rigid units. <i>Physica Status Solidi (b)</i>, 242, 561–575. <span class="todo">[verify title and pages]</span></p>
+  <p>[5] Bertoldi, K., Reis, P. M., Willshaw, S., &amp; Mullin, T. (2010). Negative Poisson's ratio behavior induced by an elastic instability. <i>Advanced Materials</i>, 22, 361–366.</p>
+  <p>[6] Shan, S., Kang, S. H., Zhao, Z., Fang, L., &amp; Bertoldi, K. (2015). Design of planar isotropic negative Poisson's ratio structures. <i>Extreme Mechanics Letters</i>, 4, 96–102. <span class="todo">[verify authors and pages]</span></p>
+  <p>[7] Rafsanjani, A., &amp; Pasini, D. (2016). Bistable auxetic mechanical metamaterials inspired by ancient geometric motifs. <i>Extreme Mechanics Letters</i>, 9, 291–296.</p>
+  <p>[8] Coulais, C., Kettenis, C., &amp; van Hecke, M. (2018). A characteristic length scale causes anomalous size effects and boundary programmability in mechanical metamaterials. <i>Nature Physics</i>, 14, 40–44.</p>
+  <p>[9] Czajkowski, M., Coulais, C., van Hecke, M., &amp; Rocklin, D. Z. (2022). Conformal elasticity of mechanism-based metamaterials. <i>Nature Communications</i>, 13, 211.</p>
+  <p>[10] Ren, X., Das, R., Tran, P., Ngo, T. D., &amp; Xie, Y. M. (2018). Auxetic metamaterials and structures: a review. <i>Smart Materials and Structures</i>, 27, 023001.</p>
+  <p>[11] Cook, R. D., Malkus, D. S., Plesha, M. E., &amp; Witt, R. J. (2002). <i>Concepts and Applications of Finite Element Analysis</i> (4th ed.). Wiley.</p>
+  <p>[12] Timoshenko, S. P., &amp; Gere, J. M. (1961). <i>Theory of Elastic Stability</i> (2nd ed.). McGraw-Hill.</p>
+  <div class="folio">15</div>
+</section>
+
+</body>
+</html>
