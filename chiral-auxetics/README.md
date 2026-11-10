@@ -13,7 +13,7 @@ This strand asks two questions:
 2. **What can the mechanism do in a structure?** A chiral core is mapped into an Eppler 420 airfoil section
    and compared with a straight-web core of the same mass, to see how easily the trailing edge can be morphed.
 
-📄 **Read the report:** [Hexachiral_Honeycomb_Project_Report.docx](Hexachiral_Honeycomb_Project_Report.docx) ·
+📄 **Read the report:** [PDF](Hexachiral_Honeycomb_Report.pdf) · [original .docx](Hexachiral_Honeycomb_Project_Report.docx) ·
 companion [airfoil application paper](Eppler420_Chiral_Honeycomb_Application_Paper.docx)
 
 ---
@@ -55,7 +55,8 @@ stresses stay below 6061-T6 yield at the comparison point and cross it at about 
 
 | File | What it is |
 |---|---|
-| `Hexachiral_Honeycomb_Project_Report.docx` | Main report: derivation, models, ANSYS coupon, airfoil study |
+| `Hexachiral_Honeycomb_Report.pdf` | Main report, typeset (with extra visuals from the sample CAD) |
+| `Hexachiral_Honeycomb_Project_Report.docx` | Main report, original Word version |
 | `Eppler420_Chiral_Honeycomb_Application_Paper.docx` | Companion paper on the airfoil application |
 | `chiral_models.m` | MATLAB function for the three closed-form lattice models |
 | `Hexachiral_Honeycomb_ANSYS_Results.xlsx` | Coupon runs R01–R07: probe readings and calculated properties |

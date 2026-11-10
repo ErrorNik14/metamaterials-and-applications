@@ -10,6 +10,8 @@ This strand builds on Gilewski et al. (2025), who turned the idea into **2D hexa
 cells** that can be 3D-printed, derived their elastic properties in closed form, and tested graded lattices
 in compression.
 
+📄 **Read the report:** [PDF](Tensegrity_Lattices_Report.pdf)
+
 <p align="center">
   <img src="images/Screenshot%202026-11-10%20204637.png" width="420" alt="CAD of the hexagonal tensegrity-inspired lattice">
   <br><sub>The project's hexagonal lattice: struts and cables in two parallel planes, tied by transverse stabilisers.</sub>
@@ -46,6 +48,7 @@ a built-in load limiter.
 
 | File | What it is |
 |---|---|
+| `Tensegrity_Lattices_Report.pdf` | Strand report: cell model reproduced, design maps, test analysis, CAD |
 | `Gilewski_2025_2D_Mater._12_045026.pdf` | Reference paper: graded 2D tensegrity-inspired lattices, model and tests |
 | `book-1.pdf` | *Tensegrity Systems*, Skelton & de Oliveira — background theory |
 | `M_hex_1_gra1_RawData_1.csv` | Raw force–displacement record (time, displacement, force; `;`-separated, decimal commas) |
