@@ -2,7 +2,8 @@
 
 ### Geometry that pushes back
 
-**Team "Mettamaterials" · Mechanics of Solids Project 2026–27**
+**Team "Mettamaterials" · Mechanics of Solids Project 2026–27**  
+Nikhil S R (ME25BTECH11035) · Uttej (ME25BTECH11023) · Srisanth (ME25BTECH11024) · Metta Anirudh (ME25BTECH11031)
 
 Squeeze a block of rubber and it bulges sideways. Stretch it and it thins. Almost every material does this —
 and almost every material can be made to stop.
@@ -12,6 +13,7 @@ moves: squeeze it and it pulls *inward*; stretch it and it *widens*. These are *
 negative Poisson's ratio, and because their behaviour is drawn rather than mixed, it can be designed.
 
 This project builds four of them, from first principles to working applications.
+**[Read the brief review (PDF)](Metamaterials_BriefReview.pdf)** — all four strands in nine pages.
 
 <table align="center">
   <tr>
@@ -27,6 +29,7 @@ This project builds four of them, from first principles to working applications.
 ## Four lattices
 
 ### ⬡ [Re-entrant honeycomb](reentrant-auxetics/) — *cells that fold shut*
+*Nikhil S R · ME25BTECH11035*  
 Flip a honeycomb's walls inward and each cell becomes a bow-tie that folds closed under load. Four classic models
 were set against a 25-cell ANSYS batch, and the lattice was put under a running foot: a midsole loaded by a real
 measured stride, searched for the cell that best trades cushioning against energy absorbed.
@@ -34,6 +37,7 @@ measured stride, searched for the cell that best trades cushioning against energ
 [Report](reentrant-auxetics/report/Re-entrant_Auxetics_Report.pdf)
 
 ### ◎ [Chiral lattice](chiral-auxetics/) — *rings that wind up*
+*Uttej · ME25BTECH11023*  
 Rings joined by tangent ligaments all turn the same way under load, winding the ligaments around them, so the
 lattice shrinks in every direction at once. Derived from scratch, checked against three published models and a 3D
 ANSYS coupon, then built into the core of a morphing aircraft wing section.
@@ -41,6 +45,7 @@ ANSYS coupon, then built into the core of a morphing aircraft wing section.
 [Report](chiral-auxetics/Hexachiral_Honeycomb_Report.pdf)
 
 ### ◇ [Rotating squares](rotating-square-auxetics/) — *tiles that counter-rotate*
+*Srisanth · ME25BTECH11024*  
 Squares hinged at their corners spin in opposite directions and open the gaps between them — a mechanism whose
 ideal Poisson's ratio is exactly −1. Three independent models agree to five decimal places; a soft TPU redesign
 was then compressed in ANSYS.
@@ -48,6 +53,7 @@ was then compressed in ANSYS.
 [Report](rotating-square-auxetics/Rotating_Squares_Report.pdf)
 
 ### △ [Tensegrity](tensegrity-structures/) — *struts held by cables*
+*Metta Anirudh · ME25BTECH11031*  
 Not auxetic, but just as strange: compression struts that never touch, suspended in a web of pre-tensioned
 cables whose self-stress sets the stiffness. Planar hexagonal tensegrity cells are stacked into a 3D lattice and
 compared with the single 2D sheets of the reference study.
@@ -69,9 +75,9 @@ Every strand follows the same path, so the four can be read side by side:
 
 | | Ideal | Simulated | What stands between |
 |---|---|---|---|
-| Re-entrant | ν −0.44 to −1 | **−0.14** | thick printed joints |
-| Chiral | ν −0.95 to −1 | **−0.82** | finite coupon, flexible rings |
-| Rotating squares | ν −0.99 to −1 | **−0.70** | stubby ligaments, soft squares |
+| Re-entrant (Nikhil S R) | ν −0.44 to −1 | **−0.14** | thick printed joints |
+| Chiral (Uttej) | ν −0.95 to −1 | **−0.82** | finite coupon, flexible rings |
+| Rotating squares (Srisanth) | ν −0.99 to −1 | **−0.70** | stubby ligaments, soft squares |
 
 Every printed lattice is a weaker version of its ideal mechanism. The models capture the trend and rank the
 designs — but the walls, joints and ligaments you can actually print are thick, and the real effect is smaller.
