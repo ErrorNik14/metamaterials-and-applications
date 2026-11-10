@@ -1,0 +1,11 @@
+name,value,unit,description
+a,10,mm,"square side"
+Lh,1,mm,"ligament length (corner to corner)"
+w,0.8,mm,"ligament width"
+t,5,mm,"extrusion thickness"
+theta0,15,deg,"as-printed square rotation (A: -theta0, B: +theta0)"
+pitch,13.2474487139159,mm,"centre-to-centre pitch = a(cos th0 + sin th0) + Lh"
+cell,26.4948974278318,mm,"2x2 repeat cell = 2*pitch (use for linear pattern)"
+N,5,-,"squares per side"
+part_size,65.2372435695794,mm,"overall part size, corner to corner of the rotated squares"
+lig_overlap,0.4,mm,"ligament runs this far into each square"

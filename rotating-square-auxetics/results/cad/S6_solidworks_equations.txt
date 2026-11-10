@@ -1,0 +1,10 @@
+"a" = 10mm
+"Lh" = 1mm
+"w" = 0.8mm
+"t" = 5mm
+"theta0" = 15deg
+"pitch" = 13.2474mm
+"cell" = 26.4949mm
+"N" = 5
+"part_size" = 65.2372mm
+"lig_overlap" = 0.4mm
